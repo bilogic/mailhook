@@ -19,16 +19,20 @@ class FileMutex
     {
         $this->resource = fopen($this->lockfile, 'w');
 
-        $lock = false;
-        for ($i = 0; $i < $this->timeout && ! ($lock = flock($this->resource, LOCK_EX | LOCK_NB)); $i++) {
-            sleep(1);
+        if ($this->resource) {
+            $lock = false;
+            for ($i = 0; $i < $this->timeout && ! ($lock = flock($this->resource, LOCK_EX | LOCK_NB)); $i++) {
+                sleep(1);
+            }
+
+            if (! $lock) {
+                return false;
+            }
+
+            return true;
         }
 
-        if (! $lock) {
-            return false;
-        }
-
-        return true;
+        return false;
     }
 
     public function unlock()
