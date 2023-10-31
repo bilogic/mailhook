@@ -88,6 +88,9 @@ class MessageHelper
     {
         global $argv;
 
+        @mkdir(__DIR__."/mail/lock", 0644);
+        @mkdir(__DIR__."/mail/meta", 0644);
+
         while (1) {
             $filename = $this->guidv4();
             $lockfile = __DIR__."/mail/lock/$filename";
