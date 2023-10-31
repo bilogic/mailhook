@@ -39,7 +39,7 @@ class MessageHelper
                     echo "Found $metafile\n";
 
                     $meta = json_decode(file_get_contents($metafile), true);
-                    $dst = strtoupper($meta[0]);
+                    $dst = strtolower($meta[0]);
                     $config = json_decode(file_get_contents($configFile), true);
 
                     if (! isset($config[$dst])) {
