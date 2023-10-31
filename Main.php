@@ -13,7 +13,7 @@ $router = new Router(function ($method, $path, $statusCode, $exception) {
 
 $router->get('/', function () {
     // Home page
-    include 'views/home.html';
+    echo 'Hi';
 });
 
 $router->get('/pipe/(.*)', function ($a) {
