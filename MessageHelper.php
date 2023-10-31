@@ -69,7 +69,7 @@ class MessageHelper
 
     }
 
-    private public function guidv4($data = null)
+    private function guidv4($data = null)
     {
         // Generate 16 bytes (128 bits) of random data or use the data passed into the function.
         $data = $data ?? random_bytes(16);
@@ -81,15 +81,15 @@ class MessageHelper
         $data[8] = chr(ord($data[8]) & 0x3F | 0x80);
 
         // Output the 36 character UUID.
-        return strtotime("now")."-".vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+        return strtotime('now').'-'.vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
 
     public function save()
     {
         global $argv;
 
-        @mkdir(__DIR__."/mail/lock", 0644);
-        @mkdir(__DIR__."/mail/meta", 0644);
+        @mkdir(__DIR__.'/mail/lock', 0644);
+        @mkdir(__DIR__.'/mail/meta', 0644);
 
         while (1) {
             $filename = $this->guidv4();
