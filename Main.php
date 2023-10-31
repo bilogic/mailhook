@@ -1,9 +1,8 @@
 <?php
 
 // If you don't have an autoloader
-require_once 'Router.php';
+require_once 'MessageHelper.php';
 
-use Xesau\HttpRequestException;
 use Xesau\Router;
 
 $router = new Router(function ($method, $path, $statusCode, $exception) {
@@ -16,14 +15,10 @@ $router->get('/', function () {
     echo 'Hi';
 });
 
-$router->get('/pipe/(.*)', function ($a) {
-    $file = __DIR__."/mail/$a";
-    if (file_exists($file)) {
-        header('Content-Type: text/plain');
-        readfile(__DIR__.'/mail/email');
-    } else {
-        throw new HttpRequestException('Page not found', 404);
-    }
+$router->get('/pipe/(.*)', function ($a) use ($m) {
+
+    $m = new MessageHelper;
+    $m->read($a);
 
 });
 
