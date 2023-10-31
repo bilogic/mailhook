@@ -36,13 +36,18 @@ class MessageHelper
             if ($mutex->lock()) {
 
                 if (file_exists($metafile)) {
+                    echo "Found $metafile\n";
 
                     $meta = json_decode(file_get_contents($metafile), true);
                     $dst = strtoupper($meta[0]);
                     $config = json_decode(file_get_contents($configFile), true);
 
-                    if (isset($config[$dst])) {
+                    if (! isset($config[$dst])) {
+                        echo "Cannot find $dst\n";
+                    } else {
+                        echo "Found $dst\n";
                         $message = "Mail for $dst, piping to: {$url}$lockfile";
+                        echo "$message\n";
                         file_put_contents('/var/log/pipe.log', $message, FILE_APPEND);
 
                         // $ok = file_get_contents("$url?email=$lockfile");
