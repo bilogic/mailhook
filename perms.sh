@@ -1,4 +1,4 @@
 #!/bin/bash
 
-chown www-data:www-data mail -R
-chmod +x postfix-filter.php
+sudo chown www-data:www-data mail -R
+sudo chmod +x postfix-filter.php
