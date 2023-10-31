@@ -23,7 +23,9 @@ class MessageHelper
     public function notify()
     {
         $url = '';
+        $configFile = __DIR__.'/config.json';
         $removables = glob(__DIR__.'/mail/meta/*');
+
         foreach ($removables as $removable) {
             $filename = basename($removable);
 
@@ -34,10 +36,23 @@ class MessageHelper
             if ($mutex->lock()) {
 
                 if (file_exists($metafile)) {
-                    $ok = file_get_contents("$url?email=$lockfile");
-                    if ($ok) {
-                        @unlink($metafile);
+
+                    $meta = json_decode(file_get_contents($metafile), true);
+                    $dst = strtoupper($meta[0]);
+                    $config = json_decode(file_get_contents($configFile), true);
+
+                    if (isset($config[$dst])) {
+                        $message = "Mail for $dst, piping to: {$url}$lockfile";
+                        file_put_contents('/var/log/pipe.log', $message, FILE_APPEND);
+
+                        // $ok = file_get_contents("$url?email=$lockfile");
+                        $ok = true;
+
+                        if ($ok) {
+                            @unlink($metafile);
+                        }
                     }
+
                 }
 
                 $mutex->unlock();
@@ -122,5 +137,6 @@ class MessageHelper
                 break;
             }
         }
+        $this->notify();
     }
 }
