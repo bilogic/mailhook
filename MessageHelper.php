@@ -46,6 +46,7 @@ class MessageHelper
                         echo "Cannot find $dst\n";
                     } else {
                         echo "Found $dst\n";
+                        $url = $config[$dst];
                         $message = "Mail for $dst, piping to: {$url}$lockfile";
                         echo "$message\n";
                         file_put_contents('/var/log/pipe.log', $message, FILE_APPEND);
