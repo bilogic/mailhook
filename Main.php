@@ -1,6 +1,5 @@
 <?php
 
-// If you don't have an autoloader
 require_once 'MessageHelper.php';
 
 use Xesau\Router;
@@ -15,10 +14,10 @@ $router->get('/', function () {
     echo 'Hi';
 });
 
-$router->get('/pipe/(.*)', function ($a) use ($m) {
+$router->get('/pipe/(.*)', function ($a) {
 
     $m = new MessageHelper;
-    $m->read($a);
+    $m->readAndDelete($a);
 
 });
 
