@@ -41,35 +41,39 @@ class MessageHelper
             $filename = basename($removable);
 
             $lockfile = __DIR__."/mail/lock/$filename";
+            $mailfile = __DIR__."/mail/$filename";
             $tellfile = __DIR__."/mail/tell/$filename";
             $basename = basename($lockfile);
 
             $mutex = (new FileMutex)->lockfile($lockfile);
             if ($mutex->lock()) {
-
                 if (file_exists($tellfile)) {
-                    echo "- Need to notify for $basename\n";
-
-                    $tell = json_decode(file_get_contents($tellfile), true);
-                    $dst = strtolower($tell[0]);
-                    $config = $this->getConfig();
-
-                    if (! isset($config[$dst])) {
-                        echo "- Cannot find config for $dst\n";
+                    if (! file_exists($mailfile)) {
+                        unlink($tellfile);  // if mail no longer exists, then we don't need tell also
                     } else {
-                        $url = $config[$dst].urlencode($basename);
-                        // $message = "Mail for $dst, piping to: {$url}";
-                        // echo "$message\n";
-                        // file_put_contents('/var/log/pipe.log', $message, FILE_APPEND);
 
-                        if ($this->isNotifyUrlSuccess($url)) {
-                            echo "- Notified success for $url\n";
-                            @unlink($tellfile);
+                        echo "- Need to notify for $basename\n";
+
+                        $tell = json_decode(file_get_contents($tellfile), true);
+                        $dst = strtolower($tell[0]);
+                        $config = $this->getConfig();
+
+                        if (! isset($config[$dst])) {
+                            echo "- Cannot find config for $dst\n";
                         } else {
-                            echo "- Notified failed for $url\n";
+                            $url = $config[$dst].urlencode($basename);
+                            // $message = "Mail for $dst, piping to: {$url}";
+                            // echo "$message\n";
+                            // file_put_contents('/var/log/pipe.log', $message, FILE_APPEND);
+
+                            if ($this->isNotifyUrlSuccess($url)) {
+                                echo "- Notified success for $url\n";
+                                @unlink($tellfile);
+                            } else {
+                                echo "- Notified failed for $url\n";
+                            }
                         }
                     }
-
                 }
                 $mutex->unlock();
             }
