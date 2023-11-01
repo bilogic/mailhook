@@ -42,36 +42,35 @@ class MessageHelper
 
             $lockfile = __DIR__."/mail/lock/$filename";
             $tellfile = __DIR__."/mail/tell/$filename";
+            $basename = basename($lockfile);
 
             $mutex = (new FileMutex)->lockfile($lockfile);
             if ($mutex->lock()) {
 
                 if (file_exists($tellfile)) {
-                    echo "Found $tellfile\n";
+                    echo "- Need to notify for $basename\n";
 
                     $tell = json_decode(file_get_contents($tellfile), true);
                     $dst = strtolower($tell[0]);
                     $config = $this->getConfig();
 
                     if (! isset($config[$dst])) {
-                        echo "Cannot find $dst\n";
+                        echo "- Cannot find config for $dst\n";
                     } else {
-                        echo "Found $dst\n";
-                        $url = $config[$dst].urlencode(basename($lockfile));
-                        $message = "Mail for $dst, piping to: {$url}";
-                        echo "$message\n";
-                        file_put_contents('/var/log/pipe.log', $message, FILE_APPEND);
+                        $url = $config[$dst].urlencode($basename);
+                        // $message = "Mail for $dst, piping to: {$url}";
+                        // echo "$message\n";
+                        // file_put_contents('/var/log/pipe.log', $message, FILE_APPEND);
 
-                        // $ok = file_get_contents("$url?email=$lockfile");
-                        $ok = true;
-
-                        if ($ok) {
+                        if ($this->isNotifyUrlSuccess($url)) {
+                            echo "- Notified success\n";
                             @unlink($tellfile);
+                        } else {
+                            echo "- Notified failed\n";
                         }
                     }
 
                 }
-
                 $mutex->unlock();
             }
         }
@@ -210,5 +209,24 @@ class MessageHelper
         $transport_maps .= '/.*/ :';
 
         return $transport_maps;
+    }
+
+    private function isNotifyUrlSuccess($url)
+    {
+        // $url = 'http://www.google.com/asdkfhasdf';
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HEADER, true);    // we want headers
+        curl_setopt($ch, CURLOPT_NOBODY, true);    // we don't need body
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        $output = curl_exec($ch);
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($httpcode == 200) {
+            return true;
+        }
+
+        return false;
     }
 }
