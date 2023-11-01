@@ -105,13 +105,13 @@ class MessageHelper
                     @unlink($readfile);
                 }
                 $mutex->unlock();
+
+                return $this;
             }
 
-        } else {
-            throw new HttpRequestException('Page not found', 404);
         }
 
-        return $this;
+        throw new HttpRequestException('Page not found', 404);
     }
 
     public function save()
