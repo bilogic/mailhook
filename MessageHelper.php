@@ -208,8 +208,10 @@ class MessageHelper
         $records = $this->getConfig();
         $transport_maps = '';
         foreach ($records as $email => $record) {
-            $transport_maps .= "/^$email/ myhook:dummy\r\n";
+            $transport_maps .= "/^$email/ forwardmail:dummy\r\n";
         }
+
+        $transport_maps .= '/^bounce@e115.com/   bulkbounce:';
         $transport_maps .= '/.*/ :';
 
         return $transport_maps;
