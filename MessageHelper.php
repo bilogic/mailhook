@@ -84,6 +84,11 @@ class MessageHelper
      */
     public function readAndDelete($filename): self
     {
+        return $this->read($filename, true);
+    }
+
+    public function read($filename, $delete = false): self
+    {
         $lockfile = __DIR__."/mail/lock/$filename";
         $mailfile = __DIR__."/mail/$filename";
         $readfile = __DIR__."/mail/read/$filename";
@@ -95,8 +100,10 @@ class MessageHelper
                 header('Content-Type: text/plain');
                 readfile($mailfile);
                 touch($readfile);
-                @unlink($mailfile);
-                @unlink($readfile);
+                if ($delete) {
+                    @unlink($mailfile);
+                    @unlink($readfile);
+                }
                 $mutex->unlock();
             }
 

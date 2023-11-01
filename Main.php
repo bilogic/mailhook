@@ -17,7 +17,8 @@ $router->get('/', function () {
 $router->get('/pipe/(.*)', function ($a) {
 
     $m = new MessageHelper;
-    $m->readAndDelete($a);
+    $m->read($a);
+    // $m->readAndDelete($a);
 
 });
 
