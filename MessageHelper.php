@@ -63,10 +63,10 @@ class MessageHelper
                         // file_put_contents('/var/log/pipe.log', $message, FILE_APPEND);
 
                         if ($this->isNotifyUrlSuccess($url)) {
-                            echo "- Notified success\n";
+                            echo "- Notified success for $url\n";
                             @unlink($tellfile);
                         } else {
-                            echo "- Notified failed\n";
+                            echo "- Notified failed for $url\n";
                         }
                     }
 
