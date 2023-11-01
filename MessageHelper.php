@@ -7,6 +7,11 @@ use Xesau\HttpRequestException;
 
 class MessageHelper
 {
+    public function setup()
+    {
+        file_put_contents('transport_maps', $this->getTransportMaps());
+    }
+
     public function remove()
     {
         $removables = glob(__DIR__.'/mail/read/*');
@@ -40,7 +45,7 @@ class MessageHelper
 
                     $meta = json_decode(file_get_contents($metafile), true);
                     $dst = strtolower($meta[0]);
-                    $config = json_decode(file_get_contents($configFile), true);
+                    $config = $this->getConfig();
 
                     if (! isset($config[$dst])) {
                         echo "Cannot find $dst\n";
@@ -144,5 +149,45 @@ class MessageHelper
             }
         }
         // $this->notify();
+    }
+
+    /**
+     * 8888888b.          d8b                   888
+     * 888   Y88b         Y8P                   888
+     * 888    888                               888
+     * 888   d88P 888d888 888 888  888  8888b.  888888 .d88b.
+     * 8888888P"  888P"   888 888  888     "88b 888   d8P  Y8b
+     * 888        888     888 Y88  88P .d888888 888   88888888
+     * 888        888     888  Y8bd8P  888  888 Y88b. Y8b.
+     * 888        888     888   Y88P   "Y888888  "Y888 "Y8888
+     */
+    /**
+     * Read our email and URL settings
+     */
+    private function getConfig(): array
+    {
+        $configFile = __DIR__.'/config.json';
+        $config = json_decode(file_get_contents($configFile), true);
+
+        return $config;
+    }
+
+    /**
+     * Generate a postfix transport_map contents from config
+     */
+    private function getTransportMaps(): string
+    {
+        // create a file that looks like this
+        // /^me@e115.com/          myhook:dummy
+        // /^ticket@bookfirst.cc/  myhook:dummy
+        // /.*/                    :
+        $records = $this->getConfig();
+        $transport_maps = '';
+        foreach ($records as $email => $record) {
+            $transport_maps .= "/^$email/ myhook:dummy\r\n";
+        }
+        $transport_maps .= '/.*/ :';
+
+        return $transport_maps;
     }
 }
