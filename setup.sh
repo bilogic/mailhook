@@ -11,3 +11,7 @@ sudo chmod +x postfix-filter.php
 
 sudo ~/mailinabox/tools/web_update
 sudo service nginx restart
+
+echo "# Listing domain conf file(s). Must have at least 1\n"
+ls *.conf
+echo "# Done"
