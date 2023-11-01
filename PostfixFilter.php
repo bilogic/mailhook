@@ -5,7 +5,7 @@ require_once 'FileMutex.php';
 
 use Xesau\HttpRequestException;
 
-class MessageHelper
+class PostfixFilter
 {
     public function setup()
     {

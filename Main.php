@@ -1,6 +1,6 @@
 <?php
 
-require_once 'MessageHelper.php';
+require_once 'PostfixFilter.php';
 
 use Xesau\Router;
 
@@ -20,7 +20,7 @@ $router->get('/pipe/(.*)', function ($a) {
         $delete = false;
     }
 
-    $m = new MessageHelper;
+    $m = new PostfixFilter;
     $m->read($a, $delete);
 });
 
