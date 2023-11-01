@@ -143,6 +143,6 @@ class MessageHelper
                 break;
             }
         }
-        $this->notify();
+        // $this->notify();
     }
 }
