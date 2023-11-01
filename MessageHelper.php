@@ -9,6 +9,10 @@ class MessageHelper
 {
     public function setup()
     {
+        @mkdir(__DIR__.'/mail/lock', 0644); // use for mutex locks
+        @mkdir(__DIR__.'/mail/tell', 0644); // track if remote end informed?
+        @mkdir(__DIR__.'/mail/read', 0644); // track if email been read?
+
         file_put_contents('transport_maps', $this->getTransportMaps());
     }
 
@@ -28,23 +32,22 @@ class MessageHelper
     public function notify()
     {
         $url = '';
-        $configFile = __DIR__.'/config.json';
-        $removables = glob(__DIR__.'/mail/meta/*');
+        $removables = glob(__DIR__.'/mail/tell/*');
 
         foreach ($removables as $removable) {
             $filename = basename($removable);
 
             $lockfile = __DIR__."/mail/lock/$filename";
-            $metafile = __DIR__."/mail/meta/$filename";
+            $tellfile = __DIR__."/mail/tell/$filename";
 
             $mutex = (new FileMutex)->lockfile($lockfile);
             if ($mutex->lock()) {
 
-                if (file_exists($metafile)) {
-                    echo "Found $metafile\n";
+                if (file_exists($tellfile)) {
+                    echo "Found $tellfile\n";
 
-                    $meta = json_decode(file_get_contents($metafile), true);
-                    $dst = strtolower($meta[0]);
+                    $tell = json_decode(file_get_contents($tellfile), true);
+                    $dst = strtolower($tell[0]);
                     $config = $this->getConfig();
 
                     if (! isset($config[$dst])) {
@@ -60,7 +63,7 @@ class MessageHelper
                         $ok = true;
 
                         if ($ok) {
-                            @unlink($metafile);
+                            @unlink($tellfile);
                         }
                     }
 
@@ -71,7 +74,12 @@ class MessageHelper
         }
     }
 
-    public function read($filename)
+    /**
+     * Read an email, it will be deleted once read
+     *
+     * @param  string  $filename
+     */
+    public function readAndDelete($filename): self
     {
         $lockfile = __DIR__."/mail/lock/$filename";
         $mailfile = __DIR__."/mail/$filename";
@@ -93,6 +101,7 @@ class MessageHelper
             throw new HttpRequestException('Page not found', 404);
         }
 
+        return $this;
     }
 
     private function guidv4($data = null)
@@ -114,14 +123,11 @@ class MessageHelper
     {
         global $argv;
 
-        @mkdir(__DIR__.'/mail/lock', 0644);
-        @mkdir(__DIR__.'/mail/meta', 0644);
-
         while (1) {
             $filename = $this->guidv4();
             $lockfile = __DIR__."/mail/lock/$filename";
             $mailfile = __DIR__."/mail/$filename";
-            $metafile = __DIR__."/mail/meta/$filename";
+            $tellfile = __DIR__."/mail/tell/$filename";
 
             $mutex = (new FileMutex)->lockfile($lockfile);
             if ($mutex->lock()) {
@@ -141,7 +147,7 @@ class MessageHelper
                     fclose($input);
                     fclose($output);
 
-                    file_put_contents($metafile, json_encode(array_slice($argv, 1)));
+                    file_put_contents($tellfile, json_encode(array_slice($argv, 1)));
                 }
 
                 $mutex->unlock();
