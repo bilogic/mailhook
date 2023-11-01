@@ -9,9 +9,9 @@ class MessageHelper
 {
     public function setup()
     {
-        @mkdir(__DIR__.'/mail/lock', 0644); // use for mutex locks
-        @mkdir(__DIR__.'/mail/tell', 0644); // track if remote end informed?
-        @mkdir(__DIR__.'/mail/read', 0644); // track if email been read?
+        @mkdir(__DIR__.'/mail/lock', 0775, true); // use for mutex locks
+        @mkdir(__DIR__.'/mail/tell', 0775, true); // track if remote end informed?
+        @mkdir(__DIR__.'/mail/read', 0775, true); // track if email been read?
 
         file_put_contents('transport_maps', $this->getTransportMaps());
     }
