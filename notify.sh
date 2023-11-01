@@ -1,3 +1,3 @@
 #!/bin/bash
 
-php notify.php
+php -r "require_once 'MessageHelper.php'; (new MessageHelper())->notify();"
