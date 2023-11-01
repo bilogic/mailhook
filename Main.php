@@ -16,7 +16,7 @@ $router->get('/', function () {
 
 $router->get('/pipe/(.*)', function ($a) {
     $delete = true;
-    if (isset($_GET['delete']) && $_GET['delete'] == false) {
+    if (isset($_GET['delete']) && $_GET['delete'] == 0) {
         $delete = false;
     }
 
