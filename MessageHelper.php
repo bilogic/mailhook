@@ -13,6 +13,10 @@ class MessageHelper
         @mkdir(__DIR__.'/mail/tell', 0775, true); // track if remote end informed?
         @mkdir(__DIR__.'/mail/read', 0775, true); // track if email been read?
 
+        @chmod(__DIR__.'/mail/lock', 0775);
+        @chmod(__DIR__.'/mail/tell', 0775);
+        @chmod(__DIR__.'/mail/read', 0775);
+
         file_put_contents('transport_maps', $this->getTransportMaps());
     }
 
