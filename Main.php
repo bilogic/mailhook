@@ -15,11 +15,13 @@ $router->get('/', function () {
 });
 
 $router->get('/pipe/(.*)', function ($a) {
+    $delete = true;
+    if (isset($_GET['delete']) && $_GET['delete'] == false) {
+        $delete = false;
+    }
 
     $m = new MessageHelper;
-    $m->read($a);
-    // $m->readAndDelete($a);
-
+    $m->read($a, $delete);
 });
 
 $router->route(['OPTION', 'PUT'], '/test', 'PageController::test');
