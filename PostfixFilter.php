@@ -241,8 +241,8 @@ class PostfixFilter
             $transport_maps .= "/^$email/ forwardmail:dummy\r\n";
         }
 
-        $transport_maps .= '/^bounce@e115.com/   bulkbounce:';
-        $transport_maps .= '/.*/ :';
+        $transport_maps .= "/^bounce@e115.com/   bulkbounce:\r\n";
+        $transport_maps .= "/.*/ :\r\n";
 
         return $transport_maps;
     }
