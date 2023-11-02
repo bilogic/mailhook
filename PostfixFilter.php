@@ -32,18 +32,18 @@ class PostfixFilter
             throw new Exception('Must specify a folder to setup');
         }
         $this->folder = $f;
+        $dirs[] = __DIR__."/{$this->folder}";
+        $dirs[] = __DIR__."/{$this->folder}/lock"; // use for mutex locks
+        $dirs[] = __DIR__."/{$this->folder}/tell"; // track if remote end informed?
+        $dirs[] = __DIR__."/{$this->folder}/read"; // track if email been read?
 
-        @mkdir(__DIR__."/{$this->folder}/lock", 0775, true); // use for mutex locks
-        @mkdir(__DIR__."/{$this->folder}/tell", 0775, true); // track if remote end informed?
-        @mkdir(__DIR__."/{$this->folder}/read", 0775, true); // track if email been read?
+        foreach ($dirs as $dir) {
+            @mkdir($dir, 0775, true);
 
-        @chmod(__DIR__."/{$this->folder}/lock", 0775);
-        @chmod(__DIR__."/{$this->folder}/tell", 0775);
-        @chmod(__DIR__."/{$this->folder}/read", 0775);
-
-        @chown(__DIR__."/{$this->folder}/lock", 'www-data');
-        @chown(__DIR__."/{$this->folder}/tell", 'www-data');
-        @chown(__DIR__."/{$this->folder}/read", 'www-data');
+            @chmod($dir, 0775);
+            @chown($dir, 'www-data');
+            @chgrp($dir, 'www-data');
+        }
 
         file_put_contents('transport_maps', $this->getTransportMaps());
 
