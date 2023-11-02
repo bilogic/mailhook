@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo php -r "require_once 'PostfixFilter.php'; (new PostfixFilter())->setup();"
+sudo php -r "require_once 'PostfixFilter.php'; (new PostfixFilter())->setup('mail')->setup('bounce');"
 
 sudo cp transport_maps /etc/postfix/transport_maps
 sudo postmap /etc/postfix/transport_maps

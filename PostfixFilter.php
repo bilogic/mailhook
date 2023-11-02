@@ -10,7 +10,7 @@ use Xesau\HttpRequestException;
  */
 class PostfixFilter
 {
-    private $folder = '';
+    private $folder = null;
 
     /**
      * Folder to store the emails
@@ -24,8 +24,15 @@ class PostfixFilter
         return $this;
     }
 
-    public function setup()
+    public function setup($folder = null): self
     {
+        $f = $folder ?? $this->folder;
+
+        if ($f == null) {
+            throw new Exception('Must specify a folder to setup');
+        }
+        $this->folder = $f;
+
         @mkdir(__DIR__."/{$this->folder}/lock", 0775, true); // use for mutex locks
         @mkdir(__DIR__."/{$this->folder}/tell", 0775, true); // track if remote end informed?
         @mkdir(__DIR__."/{$this->folder}/read", 0775, true); // track if email been read?
@@ -35,6 +42,8 @@ class PostfixFilter
         @chmod(__DIR__."/{$this->folder}/read", 0775);
 
         file_put_contents('transport_maps', $this->getTransportMaps());
+
+        return $this;
     }
 
     public function remove()
