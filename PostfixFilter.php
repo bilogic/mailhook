@@ -41,6 +41,10 @@ class PostfixFilter
         @chmod(__DIR__."/{$this->folder}/tell", 0775);
         @chmod(__DIR__."/{$this->folder}/read", 0775);
 
+        @chown(__DIR__."/{$this->folder}/lock", 'www-data');
+        @chown(__DIR__."/{$this->folder}/tell", 'www-data');
+        @chown(__DIR__."/{$this->folder}/read", 'www-data');
+
         file_put_contents('transport_maps', $this->getTransportMaps());
 
         return $this;
