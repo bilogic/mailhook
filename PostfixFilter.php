@@ -5,28 +5,45 @@ require_once 'FileMutex.php';
 
 use Xesau\HttpRequestException;
 
+/**
+ * Provide the basic functions for a postfix filter
+ */
 class PostfixFilter
 {
+    private $folder = '';
+
+    /**
+     * Folder to store the emails
+     *
+     * @param  string  $folder
+     */
+    public function folder($folder): self
+    {
+        $this->folder = $folder;
+
+        return $this;
+    }
+
     public function setup()
     {
-        @mkdir(__DIR__.'/mail/lock', 0775, true); // use for mutex locks
-        @mkdir(__DIR__.'/mail/tell', 0775, true); // track if remote end informed?
-        @mkdir(__DIR__.'/mail/read', 0775, true); // track if email been read?
+        @mkdir(__DIR__."/{$this->folder}/lock", 0775, true); // use for mutex locks
+        @mkdir(__DIR__."/{$this->folder}/tell", 0775, true); // track if remote end informed?
+        @mkdir(__DIR__."/{$this->folder}/read", 0775, true); // track if email been read?
 
-        @chmod(__DIR__.'/mail/lock', 0775);
-        @chmod(__DIR__.'/mail/tell', 0775);
-        @chmod(__DIR__.'/mail/read', 0775);
+        @chmod(__DIR__."/{$this->folder}/lock", 0775);
+        @chmod(__DIR__."/{$this->folder}/tell", 0775);
+        @chmod(__DIR__."/{$this->folder}/read", 0775);
 
         file_put_contents('transport_maps', $this->getTransportMaps());
     }
 
     public function remove()
     {
-        $removables = glob(__DIR__.'/mail/read/*');
+        $removables = glob(__DIR__."/{$this->folder}/read/*");
         foreach ($removables as $removable) {
             $filename = basename($removable);
-            $mailfile = __DIR__."/mail/$filename";
-            $readfile = __DIR__."/mail/read/$filename";
+            $mailfile = __DIR__."/{$this->folder}/$filename";
+            $readfile = __DIR__."/{$this->folder}/read/$filename";
 
             @unlink($readfile);
             @unlink($mailfile);
@@ -35,14 +52,14 @@ class PostfixFilter
 
     public function notify()
     {
-        $removables = glob(__DIR__.'/mail/tell/*');
+        $removables = glob(__DIR__."/{$this->folder}/tell/*");
 
         foreach ($removables as $removable) {
             $filename = basename($removable);
 
-            $lockfile = __DIR__."/mail/lock/$filename";
-            $mailfile = __DIR__."/mail/$filename";
-            $tellfile = __DIR__."/mail/tell/$filename";
+            $lockfile = __DIR__."/{$this->folder}/lock/$filename";
+            $mailfile = __DIR__."/{$this->folder}/$filename";
+            $tellfile = __DIR__."/{$this->folder}/tell/$filename";
             $basename = basename($lockfile);
 
             $mutex = (new FileMutex)->lockfile($lockfile);
@@ -92,9 +109,9 @@ class PostfixFilter
 
     public function read($filename, $delete = false): self
     {
-        $lockfile = __DIR__."/mail/lock/$filename";
-        $mailfile = __DIR__."/mail/$filename";
-        $readfile = __DIR__."/mail/read/$filename";
+        $lockfile = __DIR__."/{$this->folder}/lock/$filename";
+        $mailfile = __DIR__."/{$this->folder}/$filename";
+        $readfile = __DIR__."/{$this->folder}/read/$filename";
 
         if (file_exists($mailfile)) {
 
@@ -123,9 +140,9 @@ class PostfixFilter
 
         while (1) {
             $filename = $this->guidv4();
-            $lockfile = __DIR__."/mail/lock/$filename";
-            $mailfile = __DIR__."/mail/$filename";
-            $tellfile = __DIR__."/mail/tell/$filename";
+            $lockfile = __DIR__."/{$this->folder}/lock/$filename";
+            $mailfile = __DIR__."/{$this->folder}/$filename";
+            $tellfile = __DIR__."/{$this->folder}/tell/$filename";
 
             $mutex = (new FileMutex)->lockfile($lockfile);
             if ($mutex->lock()) {
