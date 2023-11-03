@@ -58,6 +58,8 @@ class PostfixFilter
             $mailfile = __DIR__."/{$this->folder}/$filename";
             $readfile = __DIR__."/{$this->folder}/read/$filename";
 
+            echo "- Removing $filename\r\n";
+
             @unlink($readfile);
             @unlink($mailfile);
         }
