@@ -281,10 +281,15 @@ class PostfixFilter
         //curl_setopt($ch, CURLOPT_NOBODY, true);    // we don't need body
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true); // enable tracking
+
         $output = curl_exec($ch);
+
+        $headerSent = curl_getinfo($ch, CURLINFO_HEADER_OUT); // request headers
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
+        echo "$headerSent\r\n";
         echo "$output\r\n";
         echo "- HTTP response code [$httpcode]\r\n";
 
