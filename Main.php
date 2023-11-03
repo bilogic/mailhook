@@ -11,7 +11,6 @@ $router = new Router(function ($method, $path, $statusCode, $exception) {
 
 $router->get('/', function () {
     // Home page
-    echo 'Hi';
 });
 
 $router->get('/pipe/(.*)', function ($a) {
@@ -21,7 +20,8 @@ $router->get('/pipe/(.*)', function ($a) {
     }
 
     $m = new PostfixFilter;
-    $m->read($a, $delete);
+    $m->folder('mail')
+        ->read($a, $delete);
 });
 
 $router->route(['OPTION', 'PUT'], '/test', 'PageController::test');
