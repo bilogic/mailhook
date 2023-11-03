@@ -4,7 +4,7 @@ sudo php -r "require_once 'PostfixFilter.php'; (new PostfixFilter())->setup('mai
 
 # setup postfix filters
 sudo chmod 0644 *php
-sudo chown www-data:www-data *php
+sudo chown ubuntu:ubuntu *php
 
 sudo chmod 0700 pf-forwardmail.php
 sudo chown www-data:www-data pf-forwardmail.php
