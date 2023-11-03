@@ -248,6 +248,30 @@ class PostfixFilter
         return $transport_maps;
     }
 
+    public function test()
+    {
+        $url = 'https://bookfirst.cc/hesk/admin/imn.php?url=https://box.e115.com/pipe/1699011933-ce1fff99-16e3-4e4f-9139-1c0e96a17d93';
+        echo "- Notifying [$url]\r\n";
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HEADER, true);    // we want headers
+        //curl_setopt($ch, CURLOPT_NOBODY, true);    // we don't need body
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true); // enable tracking
+
+        $output = curl_exec($ch);
+
+        $headerSent = curl_getinfo($ch, CURLINFO_HEADER_OUT); // request headers
+
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        echo "$headerSent\r\n";
+        echo "$output\r\n";
+        echo "- HTTP response code [$httpcode]\r\n";
+
+    }
+
     private function isNotifyUrlSuccess($url)
     {
         // $url = 'http://www.google.com/asdkfhasdf';
