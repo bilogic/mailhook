@@ -70,7 +70,7 @@ class PostfixFilter
         foreach ($removables as $removable) {
             $filename = basename($removable);
 
-            $lockfile = __DIR__."/{$this->folder}/lock/$filename";
+            $lockfile = __DIR__."/{$this->folder}/lock/$filename-notify";
             $mailfile = __DIR__."/{$this->folder}/$filename";
             $tellfile = __DIR__."/{$this->folder}/tell/$filename";
             $basename = basename($lockfile);
