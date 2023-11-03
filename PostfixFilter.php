@@ -182,7 +182,8 @@ class PostfixFilter
                 break;
             }
         }
-        // $this->notify();
+
+        return $this;
     }
 
     /**

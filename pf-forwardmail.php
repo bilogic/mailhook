@@ -10,4 +10,5 @@ require_once 'PostfixFilter.php';
 
 $m = new PostfixFilter;
 $m->folder('mail')
-    ->save();
+    ->save()
+    ->notify();
