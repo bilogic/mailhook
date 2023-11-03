@@ -73,7 +73,7 @@ class PostfixFilter
             $lockfile = __DIR__."/{$this->folder}/lock/$filename-notify";
             $mailfile = __DIR__."/{$this->folder}/$filename";
             $tellfile = __DIR__."/{$this->folder}/tell/$filename";
-            $basename = basename($lockfile);
+            $basename = basename($tellfile);
 
             $mutex = (new FileMutex)->lockfile($lockfile);
             if ($mutex->lock()) {
