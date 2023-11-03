@@ -24,6 +24,12 @@ class PostfixFilter
         return $this;
     }
 
+    private function log($message)
+    {
+        echo $message;
+        file_put_contents('filter.log', $message);
+    }
+
     public function setup($folder = null): self
     {
         $f = $folder ?? $this->folder;
@@ -58,7 +64,7 @@ class PostfixFilter
             $mailfile = __DIR__."/{$this->folder}/$filename";
             $readfile = __DIR__."/{$this->folder}/read/$filename";
 
-            echo "- Removing $filename\r\n";
+            $this->log("- Removing $filename\r\n");
 
             @unlink($readfile);
             @unlink($mailfile);
@@ -83,25 +89,25 @@ class PostfixFilter
                         unlink($tellfile);  // if mail no longer exists, then we don't need tell also
                     } else {
 
-                        echo "- Need to notify for $filename\n";
+                        $this->log("- Need to notify for $filename\n");
 
                         $tell = json_decode(file_get_contents($tellfile), true);
                         $dst = strtolower($tell[0]);
                         $config = $this->getConfig();
 
                         if (! isset($config[$dst])) {
-                            echo "- Cannot find config for $dst\n";
+                            $this->log("- Cannot find config for $dst\n");
                         } else {
                             $url = $config[$dst].urlencode($filename);
                             // $message = "Mail for $dst, piping to: {$url}";
-                            // echo "$message\n";
+                            // $this->log( "$message\n");
                             // file_put_contents('/var/log/pipe.log', $message, FILE_APPEND);
 
                             if ($this->isNotifyUrlSuccess($url)) {
-                                echo "- Notified success for $url\n";
+                                $this->log("- Notified success for $url\n");
                                 @unlink($tellfile);
                             } else {
-                                echo "- Notified failed for $url\n";
+                                $this->log("- Notified failed for $url\n");
                             }
                         }
                     }
@@ -252,7 +258,7 @@ class PostfixFilter
     private function isNotifyUrlSuccess($url)
     {
         // $url = 'http://www.google.com/asdkfhasdf';
-        echo "- Notifying [$url]\r\n";
+        $this->log("- Notifying [$url]\r\n");
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HEADER, true);    // we want headers
         //curl_setopt($ch, CURLOPT_NOBODY, true);    // we don't need body
@@ -266,9 +272,9 @@ class PostfixFilter
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        echo "$headerSent\r\n";
-        echo "$output\r\n";
-        echo "- HTTP response code [$httpcode]\r\n";
+        $this->log("$headerSent\r\n");
+        $this->log("$output\r\n");
+        $this->log("- HTTP response code [$httpcode]\r\n");
 
         if ($httpcode == 200) {
             return true;
