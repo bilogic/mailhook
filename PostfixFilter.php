@@ -65,15 +65,14 @@ class PostfixFilter
 
     public function notify()
     {
-        $removables = glob(__DIR__."/{$this->folder}/tell/*");
+        $tells = glob(__DIR__."/{$this->folder}/tell/*");
 
-        foreach ($removables as $removable) {
-            $filename = basename($removable);
+        foreach ($tells as $tell) {
+            $filename = basename($tell);
 
             $lockfile = __DIR__."/{$this->folder}/lock/$filename-notify";
             $mailfile = __DIR__."/{$this->folder}/$filename";
             $tellfile = __DIR__."/{$this->folder}/tell/$filename";
-            $basename = basename($tellfile);
 
             $mutex = (new FileMutex)->lockfile($lockfile);
             if ($mutex->lock()) {
@@ -82,7 +81,7 @@ class PostfixFilter
                         unlink($tellfile);  // if mail no longer exists, then we don't need tell also
                     } else {
 
-                        echo "- Need to notify for $basename\n";
+                        echo "- Need to notify for $filename\n";
 
                         $tell = json_decode(file_get_contents($tellfile), true);
                         $dst = strtolower($tell[0]);
@@ -91,7 +90,7 @@ class PostfixFilter
                         if (! isset($config[$dst])) {
                             echo "- Cannot find config for $dst\n";
                         } else {
-                            $url = $config[$dst].urlencode($basename);
+                            $url = $config[$dst].urlencode($filename);
                             // $message = "Mail for $dst, piping to: {$url}";
                             // echo "$message\n";
                             // file_put_contents('/var/log/pipe.log', $message, FILE_APPEND);
