@@ -251,6 +251,7 @@ class PostfixFilter
     private function isNotifyUrlSuccess($url)
     {
         // $url = 'http://www.google.com/asdkfhasdf';
+        echo "- Notifying [$url]\r\n";
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HEADER, true);    // we want headers
         curl_setopt($ch, CURLOPT_NOBODY, true);    // we don't need body
@@ -259,6 +260,8 @@ class PostfixFilter
         $output = curl_exec($ch);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+
+        echo "- HTTP response code [$httpcode]\r\n";
 
         if ($httpcode == 200) {
             return true;
