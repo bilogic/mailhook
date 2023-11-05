@@ -15,7 +15,7 @@ $router->get('/', function () {
     echo 'Hi';
 });
 
-$router->post('/mail', function () {
+$router->post('/', function () {
     if (! isset($_SERVER['PHP_AUTH_USER'])) {
         header('WWW-Authenticate: Basic realm="My Realm"');
         header('HTTP/1.0 401 Unauthorized');
