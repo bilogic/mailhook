@@ -34,7 +34,7 @@ $router->post('/', function () {
         // -t read the to address from the mail
         // -i ignore any dots found in the mail
         // -f send-as who?
-        $cmd = "/usr/sbin/sendmail -i -F 'ZZ' -f {$_POST['from']} {$_POST['to']} < {$file}";
+        $cmd = "/usr/sbin/sendmail -i -f {$_POST['from']} {$_POST['to']} < {$file}";
         $output = shell_exec($cmd);
         echo $cmd;
         echo $output;
