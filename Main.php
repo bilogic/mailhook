@@ -29,8 +29,8 @@ $router->post('/', function () {
     }
 
     if ($userOk and $passOk) {
-        $file = ($_FILES['message']['full_path']);
-        $cmd = "sendmail {$_POST['to']} -f {$_POST['from']} -t < {$file}";
+        $file = ($_FILES['message']['tmp_name']);
+        $cmd = "/usr/sbin/sendmail -t -i -f {$_POST['from']} < {$file}";
         $output = shell_exec($cmd);
         echo $cmd;
         echo $output;
