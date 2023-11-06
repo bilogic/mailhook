@@ -209,7 +209,7 @@ class PostfixFilter
      *
      * @param  string  $data
      */
-    private function guidv4($data = null): string
+    public function guidv4($data = null): string
     {
         // Generate 16 bytes (128 bits) of random data or use the data passed into the function.
         $data = $data ?? random_bytes(16);

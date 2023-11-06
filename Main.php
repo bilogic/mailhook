@@ -34,7 +34,15 @@ $router->post('/', function () {
         // -t read the to address from the mail
         // -i ignore any dots found in the mail
         // -f send-as who?
-        $cmd = "/usr/sbin/sendmail -i -f {$_POST['from']} {$_POST['to']} < {$file}";
+        $cmd = <<<CMD
+        /usr/sbin/sendmail -i -F "zz" -f {$_POST['from']} {$_POST['to']} < {$file}
+        CMD;
+
+        // using cat allows us to inject additional headers
+        $header = 'X-mailhook-id: '.(new PostfixFilter)->guidv4();
+        $cmd = <<<CMD
+        echo "$header" | cat - {$file} | /usr/sbin/sendmail -i -F "Ticket" -f {$_POST['from']} {$_POST['to']}
+        CMD;
         $output = shell_exec($cmd);
         echo $cmd;
         echo $output;
