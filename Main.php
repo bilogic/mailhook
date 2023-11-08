@@ -15,7 +15,7 @@ $router->get('/', function () {
     echo 'Hi';
 });
 
-$router->post('/mail', function () {
+$router->post('/post', function () {
     echo 'POSTED';
 });
 
