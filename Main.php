@@ -15,6 +15,10 @@ $router->get('/', function () {
     echo 'Hi';
 });
 
+$router->post('/mail', function () {
+    echo 'POSTED';
+});
+
 $router->post('/', function () {
     if (! isset($_SERVER['PHP_AUTH_USER'])) {
         header('WWW-Authenticate: Basic realm="My Realm"');
