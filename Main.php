@@ -15,11 +15,7 @@ $router->get('/', function () {
     echo 'Hi';
 });
 
-$router->post('/post', function () {
-    echo 'POSTED';
-});
-
-$router->post('/', function () {
+$router->post('/api/v3/mailgun', function () {
     if (! isset($_SERVER['PHP_AUTH_USER'])) {
         header('WWW-Authenticate: Basic realm="My Realm"');
         header('HTTP/1.0 401 Unauthorized');
