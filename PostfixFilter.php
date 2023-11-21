@@ -28,7 +28,8 @@ class PostfixFilter
     {
         echo $message;
         $message = '['.date('c').'] '.$message;
-        file_put_contents(__DIR__.'/filter.log', $message, FILE_APPEND);
+        // file_put_contents('/var/log/filter.log', $message, FILE_APPEND);
+        error_log($message);
     }
 
     public function setup($folder = null): self
