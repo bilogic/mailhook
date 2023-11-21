@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# setup the mail and bounce folders
 sudo php -r "require_once 'PostfixFilter.php'; (new PostfixFilter())->setup('mail')->setup('bounce');"
 
 # setup postfix filters
@@ -24,6 +25,9 @@ ls *.conf
 sudo chown www-data:www-data default -R
 sudo ~/mailinabox/tools/web_update
 sudo service nginx restart
+
+touch /var/log/mailhook.log
+touch /var/log/php-error.log
 
 echo
 echo "# Done"
