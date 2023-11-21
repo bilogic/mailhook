@@ -54,8 +54,8 @@ class PostfixFilter
             @mkdir($dir, 0775, true);
 
             @chmod($dir, 0775);
-            @chown($dir, 'www-data');
-            @chgrp($dir, 'www-data');
+            @chown($dir, 'user-data');
+            @chgrp($dir, 'user-data');
         }
 
         file_put_contents('transport_maps', $this->getTransportMaps());
