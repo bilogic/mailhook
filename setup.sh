@@ -26,8 +26,10 @@ sudo chown www-data:www-data default -R
 sudo ~/mailinabox/tools/web_update
 sudo service nginx restart
 
-touch /var/log/mailhook.log
-touch /var/log/php-error.log
+sudo touch /var/log/mailhook.log
+sudo touch /var/log/php-error.log
+sudo chown www-data:www-data /var/log/mailhook.log
+sudo chown www-data:www-data /var/log/php-error.log
 
 echo
 echo "# Done"
