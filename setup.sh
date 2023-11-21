@@ -10,10 +10,10 @@ sudo chmod 0644 *php
 sudo chown user-data:user-data *php
 
 sudo chmod 0700 pf-forwardmail.php
-sudo chown user-data:user-data pf-forwardmail.php
+sudo chown www-data:www-data pf-forwardmail.php
 
 sudo chmod 0700 pf-bulkbounce.php
-sudo chown user-data:user-data pf-bulkbounce.php
+sudo chown www-data:www-data pf-bulkbounce.php
 
 # restart postfix
 sudo cp transport_maps /etc/postfix/transport_maps
