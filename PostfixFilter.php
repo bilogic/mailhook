@@ -1,5 +1,10 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', false);
+ini_set('log_errors', 1);
+ini_set('error_log', '/var/log/php-error.log');
+
 require_once 'Router.php';
 require_once 'FileMutex.php';
 
@@ -26,10 +31,10 @@ class PostfixFilter
 
     private function log($message)
     {
+        syslog(LOG_INFO, "[mailhook] $message");
+
+        $message = '['.date('c').'] '.$message.PHP_EOL;
         echo $message;
-        $message = '['.date('c').'] '.$message;
-        // file_put_contents('/var/log/filter.log', $message, FILE_APPEND);
-        error_log($message);
     }
 
     public function setup($folder = null): self
@@ -66,7 +71,7 @@ class PostfixFilter
             $mailfile = __DIR__."/{$this->folder}/$filename";
             $readfile = __DIR__."/{$this->folder}/read/$filename";
 
-            $this->log("- Removing $filename\r\n");
+            $this->log("- Removing $filename");
 
             @unlink($readfile);
             @unlink($mailfile);
@@ -91,25 +96,25 @@ class PostfixFilter
                         unlink($tellfile);  // if mail no longer exists, then we don't need tell also
                     } else {
 
-                        $this->log("- Need to notify for $filename\n");
+                        $this->log("- Need to notify for $filename");
 
                         $tell = json_decode(file_get_contents($tellfile), true);
                         $dst = strtolower($tell[0]);
                         $config = $this->getConfig();
 
                         if (! isset($config[$dst])) {
-                            $this->log("- Cannot find config for $dst\n");
+                            $this->log("- Cannot find config for $dst");
                         } else {
                             $url = $config[$dst].urlencode($filename);
                             // $message = "Mail for $dst, piping to: {$url}";
-                            // $this->log( "$message\n");
+                            // $this->log( "$message");
                             // file_put_contents('/var/log/pipe.log', $message, FILE_APPEND);
 
                             if ($this->isNotifyUrlSuccess($url)) {
-                                $this->log("- Notified success for $url\n");
+                                $this->log("- Notified success for $url");
                                 @unlink($tellfile);
                             } else {
-                                $this->log("- Notified failed for $url\n");
+                                $this->log("- Notified failed for $url");
                             }
                         }
                     }
@@ -260,7 +265,7 @@ class PostfixFilter
     private function isNotifyUrlSuccess($url)
     {
         // $url = 'http://www.google.com/asdkfhasdf';
-        $this->log("- Notifying [$url]\r\n");
+        $this->log("- Notifying [$url]");
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HEADER, true);    // we want headers
         //curl_setopt($ch, CURLOPT_NOBODY, true);    // we don't need body
@@ -274,9 +279,9 @@ class PostfixFilter
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        $this->log("$headerSent\r\n");
-        $this->log("$output\r\n");
-        $this->log("- HTTP response code [$httpcode]\r\n");
+        $this->log("$headerSent");
+        $this->log("$output");
+        $this->log("- HTTP response code [$httpcode]");
 
         if ($httpcode == 200) {
             return true;

@@ -1,8 +1,5 @@
 <?php
 
-ini_set('log_errors', 1);
-ini_set('error_log', '/var/log/php-error.log');
-
 require_once 'PostfixFilter.php';
 require_once '.env.php';
 
@@ -57,8 +54,9 @@ $router->post('/api/v3/mailgun', function () {
         $output = shell_exec($cmd);
 
         $pid = substr(md5(getmypid()), 6);
-        file_put_contents('/var/log/mailhook.log', date('c')." [$pid] >>> $cmd".PHP_EOL, FILE_APPEND);
-        file_put_contents('/var/log/mailhook.log', date('c')." [$pid] <<< $output".PHP_EOL, FILE_APPEND);
+
+        syslog(LOG_INFO, "[$pid] >>> $cmd");
+        syslog(LOG_INFO, "[$pid] <<< $output");
     }
 });
 
