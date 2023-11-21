@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', false);
 ini_set('log_errors', 1);
-ini_set('error_log', '/var/log/php-error.log');
+ini_set('error_log', '/var/log/nginx/error.log');
 
 require_once 'Router.php';
 require_once 'FileMutex.php';

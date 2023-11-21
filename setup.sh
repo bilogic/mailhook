@@ -15,6 +15,9 @@ sudo chown www-data:www-data pf-forwardmail.php
 sudo chmod 0700 pf-bulkbounce.php
 sudo chown www-data:www-data pf-bulkbounce.php
 
+# sudo touch /var/log/php-error.log
+# sudo chown www-data:www-data /var/log/php-error.log
+
 # restart postfix
 sudo cp transport_maps /etc/postfix/transport_maps
 sudo postmap /etc/postfix/transport_maps
@@ -27,9 +30,6 @@ ls *.conf
 sudo chown user-data:user-data default -R
 sudo ~/mailinabox/tools/web_update
 sudo service nginx restart
-
-sudo touch /var/log/php-error.log
-sudo chown user-data:user-data /var/log/php-error.log
 
 echo
 echo "# Done"
