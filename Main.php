@@ -11,15 +11,23 @@ $router = new Router(function ($method, $path, $statusCode, $exception) {
 });
 
 $router->get('/', function () {
-    // Home page
-    echo 'Hi';
+    if (! isset($_SERVER['PHP_AUTH_USER'])) {
+        header('WWW-Authenticate: Basic realm="My Realm"');
+        header('HTTP/1.0 401 Unauthorized');
+        echo 'Error';
+        exit;
+    }
+
+    header('HTTP/1.0 401 Unauthorized');
+    echo 'Error';
 });
 
 $router->post('/api/v3/mailgun', function () {
     if (! isset($_SERVER['PHP_AUTH_USER'])) {
         header('WWW-Authenticate: Basic realm="My Realm"');
         header('HTTP/1.0 401 Unauthorized');
-        echo 'Text to send if user hits Cancel button';
+        // Text to send if user hits Cancel button
+        echo 'Error';
         exit;
     }
 
@@ -44,8 +52,10 @@ $router->post('/api/v3/mailgun', function () {
         echo "$header" | cat - {$file} | /usr/sbin/sendmail -i -F "Ticket" -f {$_POST['from']} {$_POST['to']}
         CMD;
         $output = shell_exec($cmd);
-        echo $cmd;
-        echo $output;
+
+        $pid = substr(md5(getmypid()), 6);
+        file_put_contents('/var/log/mailhook.log', date('c')." [$pid] >>> $cmd".PHP_EOL, FILE_APPEND);
+        file_put_contents('/var/log/mailhook.log', date('c')." [$pid] <<< $output".PHP_EOL, FILE_APPEND);
     }
 });
 
