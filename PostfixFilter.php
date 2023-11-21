@@ -273,19 +273,26 @@ class PostfixFilter
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLINFO_HEADER_OUT, true); // enable tracking
 
-        $output = curl_exec($ch);
-
-        $headerSent = curl_getinfo($ch, CURLINFO_HEADER_OUT); // request headers
+        $result = curl_exec($ch);
+        // request headers
+        $headerSent = curl_getinfo($ch, CURLINFO_HEADER_OUT);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        if ($result !== false) {
+            $this->log("- cURL headers: [$headerSent]");
+            $this->log("- cURL output: [$result]");
+            $this->log("- cURL HTTP code: [$httpcode]");
 
-        $this->log("$headerSent");
-        $this->log("$output");
-        $this->log("- HTTP response code [$httpcode]");
+            if ($httpcode == 200) {
+                curl_close($ch);
 
-        if ($httpcode == 200) {
-            return true;
+                return true;
+            }
+        } else {
+            $this->log('- cURL err #: '.curl_errno($ch));
+            $this->log('- cURL error: '.curl_error($ch));
         }
+
+        curl_close($ch);
 
         return false;
     }
