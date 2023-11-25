@@ -177,7 +177,7 @@ class PostfixFilter
                 if (file_exists($mailfile)) {
                     $mutex->unlock();
 
-                    continue;
+                    continue; // exits to the while loop
                 } else {
                     $output = fopen($mailfile, 'a');
 
@@ -193,6 +193,8 @@ class PostfixFilter
                 }
 
                 $mutex->unlock();
+                chmod($mailfile, 0770);
+                chmod($tellfile, 0770);
                 break;
             }
         }

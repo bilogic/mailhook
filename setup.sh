@@ -19,9 +19,10 @@ sudo chown www-data:www-data src/*php -R
 sudo chown www-data:www-data default/*php -R
 sudo chmod 0755 default
 sudo chmod 0755 src
-sudo chmod 0700 src/pf-forwardmail.php
 
+sudo chown user-data:user-data src/pf-forwardmail.php
 sudo chown user-data:user-data src/pf-bulkbounce.php
+sudo chmod 0700 src/pf-forwardmail.php
 sudo chmod 0700 src/pf-bulkbounce.php
 
 # customize and restart postfix
@@ -35,7 +36,7 @@ sudo tee -a /etc/postfix/master.cf >/dev/null <<'EOF'
 ###############################
 
 forwardmail unix - n n - - pipe
-  flags=F user=www-data argv=/home/ubuntu/miab-data/www/src/pf-forwardmail.php ${recipient} ${sender} ${size}
+  flags=F user=user-data argv=/home/ubuntu/miab-data/www/src/pf-forwardmail.php ${recipient} ${sender} ${size}
 
 bulkbounce unix - n n - - pipe
   flags=FRq user=user-data argv=/home/ubuntu/miab-data/www/src/pf-bulkbounce.php ${recipient} ${sender} ${size}
