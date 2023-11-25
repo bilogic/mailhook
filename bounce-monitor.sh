@@ -2,7 +2,7 @@
 
 while (true); do
   clear
-  ll mail-bounced/
+  ls -l mail-bounced/
   mailq
   sleep 1
 done
