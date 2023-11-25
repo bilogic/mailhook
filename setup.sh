@@ -7,16 +7,13 @@ sudo php -r "require_once 'PostfixFilter.php'; (new PostfixFilter())->setup('mai
 
 # setup postfix filters
 sudo chmod 0644 *php
-sudo chown user-data:user-data *php
+sudo chown user-data:user-data *
 
 sudo chmod 0700 pf-forwardmail.php
 sudo chown www-data:www-data pf-forwardmail.php
 
 sudo chmod 0700 pf-bulkbounce.php
 sudo chown www-data:www-data pf-bulkbounce.php
-
-# sudo touch /var/log/php-error.log
-# sudo chown www-data:www-data /var/log/php-error.log
 
 # customize and restart postfix
 
