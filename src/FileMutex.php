@@ -19,7 +19,9 @@ class FileMutex
     {
         $this->resource = fopen($this->lockfile, 'w');
 
-        if ($this->resource) {
+        if ($this->resource === false) {
+            syslog(LOG_INFO, '[FileMutex.php] '.error_get_last());
+        } else {
             $lock = false;
             for ($i = 0; $i < $this->timeout && ! ($lock = flock($this->resource, LOCK_EX | LOCK_NB)); $i++) {
                 sleep(1);
@@ -31,6 +33,8 @@ class FileMutex
 
             return true;
         }
+
+        sleep(1);
 
         return false;
     }
