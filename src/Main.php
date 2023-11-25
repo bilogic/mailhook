@@ -1,7 +1,7 @@
 <?php
 
 require_once 'PostfixFilter.php';
-require_once '.env.php';
+require_once '../.env.php';
 
 use Xesau\Router;
 
