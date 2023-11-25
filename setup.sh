@@ -6,7 +6,7 @@ sudo git pull
 sudo php -r "require_once 'src/PostfixFilter.php'; (new PostfixFilter())->setup('mail-forward')->setup('mail-bounced');"
 
 # setup postfix filters
-sudo chmod 0644 *php -R
+sudo chmod 0644 * -R
 sudo chown user-data:user-data * -R
 
 sudo chmod 0700 src/pf-forwardmail.php
