@@ -9,6 +9,8 @@ sudo php -r "require_once 'src/PostfixFilter.php'; (new PostfixFilter())->setup(
 sudo chmod 0644 * -R
 sudo chmod +x *.sh
 sudo chown user-data:user-data * -R
+sudo chown www-data:www-data default/*php -R
+sudo chown www-data:www-data src/*php -R
 
 sudo chmod 0700 src/pf-forwardmail.php
 sudo chown www-data:www-data src/pf-forwardmail.php
