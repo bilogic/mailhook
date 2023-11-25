@@ -41,6 +41,7 @@ EOF
 
 ## customize main.cf
 sudo cp /etc/postfix/main.cf.mailinabox /etc/postfix/main.cf
+sudo sed -i -e 's/delay_warning_time/# delay_warning_time/g' /etc/postfix/main.cf
 sudo tee -a /etc/postfix/main.cf >/dev/null <<'EOF'
 
 ###############################
