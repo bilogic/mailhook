@@ -37,7 +37,7 @@ class PostfixFilter
         echo $message;
     }
 
-    public function setup($folder = null): self
+    public function setup($folder = null): static
     {
         $f = $folder ?? $this->folder;
 
@@ -235,7 +235,7 @@ class PostfixFilter
      */
     private function getConfig(): array
     {
-        $configFile = __DIR__.'/config.json';
+        $configFile = __DIR__.'/../config.json';
         $config = json_decode(file_get_contents($configFile), true);
 
         return $config;
