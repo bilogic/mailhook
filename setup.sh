@@ -6,11 +6,14 @@ sudo git pull
 sudo php -r "require_once 'src/PostfixFilter.php'; (new PostfixFilter())->setup('../mail-forward')->setup('../mail-bounced');"
 
 # setup postfix filters
+sudo chown user-data:user-data * -R
 sudo chmod 0644 * -R
 sudo chmod +x *.sh
-sudo chown user-data:user-data * -R
+sudo chmod 0770 mail-bounced -R
+sudo chmod 0770 mail-forward -R
 
 # setup php files
+sudo adduser www-data user-data
 sudo chown www-data:www-data default/*php -R
 sudo chown www-data:www-data src/*php -R
 sudo chmod 0700 src/pf-forwardmail.php
@@ -58,7 +61,6 @@ sudo service postfix restart
 echo "# Listing domain conf file(s). Must have at least 1"
 ls *.conf
 
-sudo chown user-data:user-data default -R
 sudo ~/mailinabox/tools/web_update
 sudo service nginx restart
 
