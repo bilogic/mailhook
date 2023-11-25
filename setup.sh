@@ -18,7 +18,38 @@ sudo chown www-data:www-data pf-bulkbounce.php
 # sudo touch /var/log/php-error.log
 # sudo chown www-data:www-data /var/log/php-error.log
 
-# restart postfix
+# customize and restart postfix
+
+## customize master.cf
+sudo tee -a /etc/postfix/master.cf >/dev/null <<'EOF'
+
+###############################
+# custom mailhook settings
+###############################
+
+forwardmail unix - n n - - pipe
+  flags=F user=www-data argv=/home/ubuntu/miab-data/www/pf-forwardmail.php ${recipient} ${sender} ${size}
+
+bulkbounce unix - n n - - pipe
+  flags=FRq user=www-data argv=/home/ubuntu/miab-data/www/pf-bulkbounce.php ${recipient} ${sender} ${size}
+EOF
+
+## customize main.cf
+sudo tee -a /etc/postfix/main.cf >/dev/null <<'EOF'
+
+###############################
+# custom mailhook settings
+###############################
+
+delay_warning_time=1m
+notify_classes = 2bounce, bounce, delay, resource, software
+bounce_notice_recipient = bounce@e115.com
+2bounce_notice_recipient = bounce@e115.com
+delay_notice_recipient = bounce@e115.com
+error_notice_recipient = bounce@e115.com
+transport_maps = regexp:/etc/postfix/transport_maps
+EOF
+
 sudo cp transport_maps /etc/postfix/transport_maps
 sudo postmap /etc/postfix/transport_maps
 sudo service postfix restart
