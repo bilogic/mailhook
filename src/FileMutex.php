@@ -21,6 +21,7 @@ class FileMutex
 
         if ($this->resource === false) {
             $error = print_r(error_get_last(), true);
+            syslog(LOG_INFO, '[FileMutex.php] running as '.get_current_user());
             syslog(LOG_INFO, '[FileMutex.php] '.$error);
         } else {
             $lock = false;
