@@ -68,5 +68,7 @@ ls *.conf
 sudo ~/mailinabox/tools/web_update
 sudo service nginx restart
 
+mailq
+
 echo
 echo "# Done"
