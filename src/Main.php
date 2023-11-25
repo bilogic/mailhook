@@ -69,7 +69,7 @@ $router->get('/pipe/(.*)', function ($a) {
     }
 
     $m = new PostfixFilter;
-    $m->folder('mail')
+    $m->folder('../mail-forward')
         ->read($a, $delete);
 });
 
