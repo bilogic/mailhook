@@ -39,7 +39,7 @@ forwardmail unix - n n - - pipe
   flags=F user=user-data argv=/home/ubuntu/miab-data/www/src/pf-forwardmail.php ${recipient} ${sender} ${size}
 
 bulkbounce unix - n n - - pipe
-  flags=FRq user=user-data argv=/home/ubuntu/miab-data/www/src/pf-bulkbounce.php ${sender} ${recipient} ${size}
+  flags=FRq user=user-data argv=/home/ubuntu/miab-data/www/src/pf-bulkbounce.php ${recipient} ${sender} ${size}
 EOF
 
 ## customize main.cf
