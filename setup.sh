@@ -19,6 +19,7 @@ sudo chmod 0700 src/pf-bulkbounce.php
 # customize and restart postfix
 
 ## customize master.cf
+sudo cp /etc/postfix/master.cf.mailinabox /etc/postfix/master.cf
 sudo tee -a /etc/postfix/master.cf >/dev/null <<'EOF'
 
 ###############################
@@ -33,6 +34,7 @@ bulkbounce unix - n n - - pipe
 EOF
 
 ## customize main.cf
+sudo cp /etc/postfix/main.cf.mailinabox /etc/postfix/main.cf
 sudo tee -a /etc/postfix/main.cf >/dev/null <<'EOF'
 
 ###############################
