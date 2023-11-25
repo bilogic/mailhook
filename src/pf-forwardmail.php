@@ -11,6 +11,6 @@ require_once 'PostfixFilter.php';
 syslog(LOG_INFO, '[pf-forwardmail] running as '.get_current_user());
 
 $m = new PostfixFilter;
-$m->folder('mail')
+$m->folder('../mail-forward')
     ->save()
     ->notify();

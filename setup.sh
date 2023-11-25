@@ -3,17 +3,17 @@
 sudo git pull
 
 # setup the mail and bounce folders
-sudo php -r "require_once 'PostfixFilter.php'; (new PostfixFilter())->setup('mail')->setup('bounce');"
+sudo php -r "require_once 'PostfixFilter.php'; (new PostfixFilter())->setup('mail-forward')->setup('mail-bounced');"
 
 # setup postfix filters
 sudo chmod 0644 *php
-sudo chown user-data:user-data *
+sudo chown user-data:user-data * -R
 
 sudo chmod 0700 pf-forwardmail.php
-sudo chown www-data:www-data pf-forwardmail.php
+sudo chown www-data:www-data src/pf-forwardmail.php
 
 sudo chmod 0700 pf-bulkbounce.php
-sudo chown www-data:www-data pf-bulkbounce.php
+sudo chown www-data:www-data src/pf-bulkbounce.php
 
 # customize and restart postfix
 
@@ -25,10 +25,10 @@ sudo tee -a /etc/postfix/master.cf >/dev/null <<'EOF'
 ###############################
 
 forwardmail unix - n n - - pipe
-  flags=F user=www-data argv=/home/ubuntu/miab-data/www/pf-forwardmail.php ${recipient} ${sender} ${size}
+  flags=F user=www-data argv=/home/ubuntu/miab-data/www/src/pf-forwardmail.php ${recipient} ${sender} ${size}
 
 bulkbounce unix - n n - - pipe
-  flags=FRq user=www-data argv=/home/ubuntu/miab-data/www/pf-bulkbounce.php ${recipient} ${sender} ${size}
+  flags=FRq user=www-data argv=/home/ubuntu/miab-data/www/src/pf-bulkbounce.php ${recipient} ${sender} ${size}
 EOF
 
 ## customize main.cf

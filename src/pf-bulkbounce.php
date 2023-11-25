@@ -9,5 +9,5 @@
 require_once 'PostfixFilter.php';
 
 $m = new PostfixFilter;
-$m->folder('bounce')
+$m->folder('../mail-bounced')
     ->save();
