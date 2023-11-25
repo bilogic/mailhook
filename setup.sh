@@ -17,8 +17,8 @@ sudo adduser www-data user-data
 sudo chown www-data:www-data .*php -R
 sudo chown www-data:www-data src/*php -R
 sudo chown www-data:www-data default/*php -R
-sudo chmod 0750 default
-sudo chmod 0750 src
+sudo chmod 0755 default
+sudo chmod 0755 src
 sudo chmod 0700 src/pf-forwardmail.php
 sudo chmod 0700 src/pf-bulkbounce.php
 
