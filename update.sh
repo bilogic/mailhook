@@ -3,6 +3,6 @@
 sudo rm /etc/postfix/main.cf
 sudo rm /etc/postfix/master.cf
 
-sudo mailinabox
+sudo NONINTERACTIVE=1 mailinabox
 
 ./setup.sh
