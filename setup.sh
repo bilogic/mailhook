@@ -7,6 +7,7 @@ sudo php -r "require_once 'src/PostfixFilter.php'; (new PostfixFilter())->setup(
 
 # setup postfix filters
 sudo chmod 0644 * -R
+sudo chmod +x *.sh
 sudo chown user-data:user-data * -R
 
 sudo chmod 0700 src/pf-forwardmail.php
