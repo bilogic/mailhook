@@ -255,10 +255,10 @@ class PostfixFilter
         $records = $this->getConfig();
         $transport_maps = '';
         foreach ($records as $email => $record) {
-            $transport_maps .= "/^$email/ forwardmail:dummy\r\n";
+            $transport_maps .= "/^$email/ mailhookforward:dummy\r\n";
         }
 
-        $transport_maps .= "/^bounce@e115.com/   bulkbounce:dummy\r\n";
+        $transport_maps .= "/^bounce@e115.com/   mailhookbounce:dummy\r\n";
         $transport_maps .= "/.*/ :\r\n";
 
         return $transport_maps;
