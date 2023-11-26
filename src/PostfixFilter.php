@@ -42,7 +42,7 @@ class PostfixFilter
         return $this;
     }
 
-    private function log($message)
+    public function log($message)
     {
         syslog(LOG_INFO, "[{$this->as}] $message");
 
