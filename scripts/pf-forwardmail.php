@@ -1,16 +1,18 @@
 #!/usr/bin/php
 <?php
 
-use App\PostfixFilter;
-
 // forwardmail Postfix Filter
 //
-// this file should be owned by www-data
-// and permission of 0700, see setup.sh
+// see setup.sh, this file should be
+// 1. owned by user-data
+// 2. permission of 0700
 
-require_once '../src/PostfixFilter.php';
+syslog(LOG_INFO, '[pf-bulkbounce.php] running as '.get_current_user());
+syslog(LOG_INFO, '[pf-bulkbounce.php] running in '.getcwd());
 
-syslog(LOG_INFO, '[pf-forwardmail] running as '.get_current_user());
+require_once __DIR__.'/../src/PostfixFilter.php';
+
+use App\PostfixFilter;
 
 $filter = (new PostfixFilter)
     ->as('pf-forwardmail');
