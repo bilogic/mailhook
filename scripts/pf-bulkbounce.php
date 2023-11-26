@@ -29,7 +29,7 @@ $filter->as('pf-bulkbounce')
             $dsn = $parser->getAllHeaders();
             $dst = $dsn['Return-Path'];
 
-            $variables = json_decode($headers['X-Mailgun-Variables'], true);
+            $variables = json_decode($dst['X-Mailgun-Variables'], true);
 
             $config = $fullConfig[$dst];
             $secret = $config['signing-secret'];
