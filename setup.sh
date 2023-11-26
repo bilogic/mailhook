@@ -18,13 +18,14 @@ sudo chown www-data:www-data .*php -R
 sudo chown www-data:www-data default/*php -R
 sudo chown www-data:www-data src/*php -R
 sudo chown user-data:user-data vendor/*php -R
-sudo chmod 0755 default
-sudo chmod 0755 src
-sudo chmod 0755 vendor
+sudo find . -type d -exec chmod 755 {} +
+# sudo chmod 0755 default
+# sudo chmod 0755 src
+# sudo chmod 0755 vendor
 
 sudo chown user-data:user-data scripts/pf-forwardmail.php
 sudo chown user-data:user-data scripts/pf-bulkbounce.php
-sudo chmod 0755 scripts
+# sudo chmod 0755 scripts
 sudo chmod 0700 scripts/pf-forwardmail.php
 sudo chmod 0700 scripts/pf-bulkbounce.php
 
