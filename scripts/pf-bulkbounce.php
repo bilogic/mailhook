@@ -8,12 +8,13 @@ use App\PostfixFilter;
 // this file should be owned by www-data
 // and permission of 0700, see setup.sh
 
-require_once 'PostfixFilter.php';
+require_once 'src/PostfixFilter.php';
 
 syslog(LOG_INFO, '[pf-bulkbounce.php] running as '.get_current_user());
 
-$m = new PostfixFilter;
-$m->folder(__DIR__.'/../mail-bounced')
+$filter = new PostfixFilter;
+$filter->as('pf-bulkbounce')
+    ->folder(__DIR__.'/../mail-bounced')
     ->save()
     ->handler(function ($self, $config, $meta, $mailfile) {
     });
