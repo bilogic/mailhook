@@ -1,5 +1,7 @@
 <?php
 
+namespace App;
+
 require_once 'PostfixFilter.php';
 require_once '../.env.php';
 

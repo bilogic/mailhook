@@ -1,0 +1,63 @@
+From double-bounce@box.e115.com  Sun Nov 26 14:36:08 2023
+Return-Path: <double-bounce@box.e115.com>
+Received: by box.e115.com (Postfix)
+        id 8EB5640161; Sun, 26 Nov 2023 14:36:08 +0800 (+08)
+Date: Sun, 26 Nov 2023 14:36:08 +0800 (+08)
+From: MAILER-DAEMON@box.e115.com (Mail Delivery System)
+Subject: Postmaster Copy: Undelivered Mail
+To: bounce@e115.com
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
+Content-Type: multipart/report; report-type=delivery-status;
+        boundary="613583FCF0.1700980568/box.e115.com"
+Message-Id: <20231126063608.8EB5640161@box.e115.com>
+
+This is a MIME-encapsulated message.
+
+--613583FCF0.1700980568/box.e115.com
+Content-Description: Notification
+Content-Type: text/plain; charset=us-ascii
+
+
+<nonexistent@example.com>: Domain example.com does not accept mail (nullMX)
+
+--613583FCF0.1700980568/box.e115.com
+Content-Description: Delivery report
+Content-Type: message/delivery-status
+
+Reporting-MTA: dns; box.e115.com
+X-Postfix-Queue-ID: 613583FCF0
+X-Postfix-Sender: rfc822; nonexist@ssdmeter.com
+Arrival-Date: Sun, 26 Nov 2023 14:36:07 +0800 (+08)
+
+Final-Recipient: rfc822; nonexistent@example.com
+Original-Recipient: rfc822;nonexistent@example.com
+Action: failed
+Status: 5.1.0
+Diagnostic-Code: X-Postfix; Domain example.com does not accept mail (nullMX)
+
+--613583FCF0.1700980568/box.e115.com
+Content-Description: Undelivered Message Headers
+Content-Type: text/rfc822-headers
+
+Return-Path: <nonexist@ssdmeter.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ssdmeter.com; s=mail;
+        t=1700980567; bh=m/QnVeRMIcapwTRYya5Z5lWrsxhSnstokOiB27Fvjo4=;
+        h=To:Subject:Date:From:From;
+        b=hwSB5ImjyOAQ0tdtpI0Lrwt+i8FfOLFMqO2v3n4mqNT9s37hZYNDBHLsrMIzdpHUY
+         z/NWOKB9v8Cv7wEda+on+F7PIzHFyCzbr9ofNIqF8oBzxr0WMyoDg25CVPu7sm/2P7
+         WxJazgjTrVUCGxMGqnDM3gJBJCbO7FkKVkWtUJaAtDnfaAYWe3EkIFDzIhGsx2/rK8
+         5EVrp6xNHNeOtLhwBeMT8AY+OTkKbWhVJaDdQTWdQVqfF+U8iD2RhpMthH3f6HKZx/
+         xRu5HnygZ/EojTtre7VlU34WG+LubPeLTxGj7iIBSFG3f9UC4sLjPQfP7hf/qdvnBW
+         Ule0l1M32Yi3A==
+Received: by box.e115.com (Postfix, from userid 1000)
+        id 613583FCF0; Sun, 26 Nov 2023 14:36:07 +0800 (+08)
+To: nonexistent@example.com
+Mailhook-Id: 1234567890
+Subject: Hey, I successfully configured Postfix with sender-dependent SASL authentication!
+Content-type: text/html
+Message-Id: <20231126063607.613583FCF0@box.e115.com>
+Date: Sun, 26 Nov 2023 14:36:07 +0800 (+08)
+From: SS <nonexist@ssdmeter.com>
+
+--613583FCF0.1700980568/box.e115.com--

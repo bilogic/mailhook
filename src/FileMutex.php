@@ -1,5 +1,7 @@
 <?php
 
+namespace App;
+
 class FileMutex
 {
     private $resource = null;

@@ -13,11 +13,20 @@ class Dsn
         return $this->dsnHeaders;
     }
 
+    /**
+     * Is this an outgoing or incoming bounce?
+     */
+    public function isOutgoing(): bool
+    {
+        return isset($this->dsnHeaders['Return-Path']);
+    }
+
     public function parse($email): self
     {
         $parser = new MailMimeParser();
         $handle = fopen($email, 'r');
         $message = $parser->parse($handle, false);
+        $original = null;
 
         foreach ($message->getAllParts() as $part) {
             switch ($part->getContentType()) {
@@ -31,8 +40,10 @@ class Dsn
             }
         }
 
-        foreach ($original->getAllHeaders() as $header) {
-            $this->dsnHeaders[$header->getName()] = $header->getValue();
+        if ($original) {
+            foreach ($original->getAllHeaders() as $header) {
+                $this->dsnHeaders[$header->getName()] = $header->getValue();
+            }
         }
 
         foreach ($report->getAllHeaders() as $header) {

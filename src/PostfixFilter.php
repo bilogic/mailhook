@@ -1,5 +1,7 @@
 <?php
 
+namespace App;
+
 error_reporting(E_ALL);
 ini_set('display_errors', false);
 ini_set('log_errors', 1);
@@ -8,6 +10,8 @@ ini_set('error_log', '/var/log/nginx/error.log');
 require_once 'Router.php';
 require_once 'FileMutex.php';
 
+use Closure;
+use Exception;
 use Xesau\HttpRequestException;
 
 /**
@@ -16,6 +20,8 @@ use Xesau\HttpRequestException;
 class PostfixFilter
 {
     private $folder = null;
+
+    private $as = 'PostfixFilter';
 
     /**
      * Folder to store the emails
@@ -29,12 +35,18 @@ class PostfixFilter
         return $this;
     }
 
+    public function as($as): static
+    {
+        $this->as = $as;
+
+        return $this;
+    }
+
     private function log($message)
     {
-        syslog(LOG_INFO, "[mailhook] $message");
+        syslog(LOG_INFO, "[{$this->as}] $message");
 
-        $message = '['.date('c').'] '.$message.PHP_EOL;
-        echo $message;
+        echo '['.date('c').'] '.$message.PHP_EOL;
     }
 
     public function setup($folder = null): static
@@ -78,9 +90,10 @@ class PostfixFilter
         }
     }
 
-    public function notify()
+    public function handler(Closure $closure)
     {
-        $tells = glob(__DIR__."/{$this->folder}/tell/*");
+        $path = __DIR__."/{$this->folder}/tell/*";
+        $tells = glob($path);
 
         foreach ($tells as $tell) {
             $filename = basename($tell);
@@ -105,16 +118,19 @@ class PostfixFilter
                         if (! isset($config[$dst])) {
                             $this->log("- Cannot find config for $dst");
                         } else {
-                            $url = $config[$dst].urlencode($filename);
+                            $result = ($closure)($this, $config, $tell, $mailfile);
+
+                            // $url = $config[$dst].urlencode($filename);
                             // $message = "Mail for $dst, piping to: {$url}";
                             // $this->log( "$message");
                             // file_put_contents('/var/log/pipe.log', $message, FILE_APPEND);
 
-                            if ($this->isNotifyUrlSuccess($url)) {
-                                $this->log("- Notified success for $url");
+                            // if ($this->isNotifyUrlSuccess($url)) {
+                            if ($result) {
+                                $this->log('- Handler was successful');
                                 @unlink($tellfile);
                             } else {
-                                $this->log("- Notified failed for $url");
+                                $this->log('- Handler failed');
                             }
                         }
                     }
@@ -161,7 +177,7 @@ class PostfixFilter
         throw new HttpRequestException('Page not found', 404);
     }
 
-    public function save()
+    public function save(): static
     {
         global $argv;
 
@@ -262,40 +278,5 @@ class PostfixFilter
         $transport_maps .= "/.*/ :\r\n";
 
         return $transport_maps;
-    }
-
-    private function isNotifyUrlSuccess($url)
-    {
-        // $url = 'http://www.google.com/asdkfhasdf';
-        $this->log("- Notifying [$url]");
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HEADER, true);    // we want headers
-        //curl_setopt($ch, CURLOPT_NOBODY, true);    // we don't need body
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        curl_setopt($ch, CURLINFO_HEADER_OUT, true); // enable tracking
-
-        $result = curl_exec($ch);
-        // request headers
-        $headerSent = curl_getinfo($ch, CURLINFO_HEADER_OUT);
-        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        if ($result !== false) {
-            $this->log("- cURL headers: [$headerSent]");
-            $this->log("- cURL output: [$result]");
-            $this->log("- cURL HTTP code: [$httpcode]");
-
-            if ($httpcode == 200) {
-                curl_close($ch);
-
-                return true;
-            }
-        } else {
-            $this->log('- cURL err #: '.curl_errno($ch));
-            $this->log('- cURL error: '.curl_error($ch));
-        }
-
-        curl_close($ch);
-
-        return false;
     }
 }
