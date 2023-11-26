@@ -10,7 +10,7 @@
 syslog(LOG_INFO, '[pf-bulkbounce.php] running as '.get_current_user());
 syslog(LOG_INFO, '[pf-bulkbounce.php] running in '.getcwd());
 
-require_once __DIR__.'/../src/PostfixFilter.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 use App\PostfixFilter;
 
@@ -19,4 +19,5 @@ $filter->as('pf-bulkbounce')
     ->folder(__DIR__.'/../mail-bounced')
     ->save()
     ->handler(function ($self, $config, $meta, $mailfile) {
+        return true; // delete away these emails
     });
