@@ -14,6 +14,14 @@ class Dsn
     }
 
     /**
+     * Is this a hard bounce? false = soft
+     */
+    public function isHard(): bool
+    {
+        return substr($this->dsnHeaders['Status'], 0, 1) == '5';
+    }
+
+    /**
      * Is this an outgoing or incoming bounce?
      */
     public function isOutgoing(): bool

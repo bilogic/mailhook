@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class DsnTest extends TestCase
 {
-    public function test_can_parse_outgoing_bounce_does_not_accept_mail_dsn()
+    public function test_can_parse_outgoing_bounce_remote_does_not_accept_mail_dsn()
     {
         $parser = (new Dsn)->parse(__DIR__.'/postfix-dsn1a.txt');
         $headers = $parser->getAllHeaders();
@@ -32,6 +32,7 @@ class DsnTest extends TestCase
             $this->assertEquals($value, $headers[$key]);
         }
 
+        $this->assertTrue($parser->isHard());
         $this->assertTrue($parser->isOutgoing());
     }
 
