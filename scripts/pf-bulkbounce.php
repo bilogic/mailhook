@@ -21,6 +21,8 @@ $filter->as('pf-bulkbounce')
     // ->save()
     ->handler(function ($self, $fullConfig, $meta, $mailfile) {
 
+        return false;
+
         $parser = (new Dsn)->parse($mailfile);
 
         if ($parser->isOutgoing()) {
@@ -31,12 +33,23 @@ $filter->as('pf-bulkbounce')
 
             $config = $fullConfig[$dst];
             $secret = $config['signing-secret'];
-            $data = array_merge([
+            $eventData = [
+                'id' => 'DACSsAdVSeGpLid7TN03WA',
                 'event' => 'failed',
                 'log-level' => 'error',
                 'timestamp' => strtotime('now'),
-                'id' => 'DACSsAdVSeGpLid7TN03WA',
-            ], $dsn);
+                'severity' => 'permanent',
+                'recipient' => $dst,
+                'recipient-domain' => 'recipient-domain',
+                'message' => [
+                    'headers' => $dsn,
+                ],
+                'user-variables' => [
+                    'track_id' => 'asdfasdfasdfas',
+                    'ignore_failure' => true,
+                    'message' => 'fasdfasdf',
+                ],
+            ];
 
             $signature = [
                 'timestamp' => strtotime('now'),
@@ -48,14 +61,14 @@ $filter->as('pf-bulkbounce')
 
             $payload = [
                 'signature' => $signature,
-                'event-data' => $data,
+                'event-data' => $eventData,
             ];
 
             if ($parser->isHard()) {
-                $data['severity'] = 'permanent';
+                $eventData['severity'] = 'permanent';
                 $url = $config['webhooks']['permanent_fail'];
             } else {
-                $data['severity'] = 'temporary';
+                $eventData['severity'] = 'temporary';
                 $url = $config['webhooks']['temporary_fail'];
             }
 
