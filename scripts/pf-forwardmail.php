@@ -18,7 +18,7 @@ $filter = (new PostfixFilter)
     ->as('pf-forwardmail')
     ->folder(__DIR__.'/../mail-forward');
 
-// $filter->save();
+$filter->save();
 
 $filter->handler(function ($self, $config, $meta, $mailfile) {
 

@@ -18,7 +18,7 @@ use App\PostfixFilter;
 $filter = new PostfixFilter;
 $filter->as('pf-bulkbounce')
     ->folder(__DIR__.'/../mail-bounced')
-    // ->save()
+    ->save()
     ->handler(function ($self, $fullConfig, $meta, $mailfile) {
 
         return false;
