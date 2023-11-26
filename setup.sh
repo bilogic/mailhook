@@ -51,12 +51,15 @@ EOF
 
 ## customize main.cf
 sudo cp /etc/postfix/main.cf.mailinabox /etc/postfix/main.cf
+sudo sed -i -e 's/maximal_queue_lifetime/# maximal_queue_lifetime/g' /etc/postfix/main.cf
 sudo sed -i -e 's/delay_warning_time/# delay_warning_time/g' /etc/postfix/main.cf
 sudo tee -a /etc/postfix/main.cf >/dev/null <<'EOF'
 
 ###############################
 # custom mailhook settings
 ###############################
+
+# qmgr_daemon_timeout=1000s
 
 maximal_queue_lifetime=0
 delay_warning_time=1m
