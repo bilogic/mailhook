@@ -117,7 +117,6 @@ class PostfixFilter
 
                         if (! isset($config[$dst])) {
                             $this->log("- Cannot find config for $dst");
-                            $config = [];
                         }
 
                         $result = ($closure)($this, $config, $tell, $mailfile);
