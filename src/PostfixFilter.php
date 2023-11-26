@@ -28,12 +28,15 @@ class PostfixFilter
         $code = <<<'PHP'
         <?php
 
+        // THIS IS AUTOMATICALLY GENERATED FROM CONFIG.JSON
+        // DO NOT MODIFY THIS FILE
+
         $_ENV = [           
         PHP;
         foreach ($this->getConfig() as $email => $params) {
             $code .= "'{$params['key']}' => '$email',".PHP_EOL;
         }
-        $code .= $code.'];';
+        $code .= '];';
 
         $filename = "{$this->folder}/../.env.php";
         file_put_contents($filename, $code);
