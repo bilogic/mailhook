@@ -29,7 +29,14 @@ $filter->as('pf-bulkbounce')
             $dsn = $parser->getAllHeaders();
             $dst = $dsn['Return-Path'];
 
-            $variables = json_decode($dsn['X-Mailgun-Variables'], true);
+            $userVariables = json_decode($dsn['X-Mailgun-Variables'], true);
+
+            if ($userVariables['ignore_failure']) {
+
+                @unlink($mailfile);
+
+                return true;
+            }
 
             $config = $fullConfig[$dst];
             $secret = $config['signing-secret'];
@@ -43,7 +50,7 @@ $filter->as('pf-bulkbounce')
                 'message' => [
                     'headers' => $dsn,
                 ],
-                'user-variables' => $variables,
+                'user-variables' => $userVariables,
             ];
 
             $signature = [
