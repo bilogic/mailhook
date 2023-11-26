@@ -117,22 +117,24 @@ class PostfixFilter
 
                         if (! isset($config[$dst])) {
                             $this->log("- Cannot find config for $dst");
-                        } else {
-                            $result = ($closure)($this, $config, $tell, $mailfile);
-
-                            // $url = $config[$dst].urlencode($filename);
-                            // $message = "Mail for $dst, piping to: {$url}";
-                            // $this->log( "$message");
-                            // file_put_contents('/var/log/pipe.log', $message, FILE_APPEND);
-
-                            // if ($this->isNotifyUrlSuccess($url)) {
-                            if ($result) {
-                                $this->log('- Handler was successful');
-                                @unlink($tellfile);
-                            } else {
-                                $this->log('- Handler failed');
-                            }
+                            $config = [];
                         }
+
+                        $result = ($closure)($this, $config, $tell, $mailfile);
+
+                        // $url = $config[$dst].urlencode($filename);
+                        // $message = "Mail for $dst, piping to: {$url}";
+                        // $this->log( "$message");
+                        // file_put_contents('/var/log/pipe.log', $message, FILE_APPEND);
+
+                        // if ($this->isNotifyUrlSuccess($url)) {
+                        if ($result) {
+                            $this->log('- Handler was successful');
+                            @unlink($tellfile);
+                        } else {
+                            $this->log('- Handler failed');
+                        }
+
                     }
                 }
                 $mutex->unlock();
