@@ -8,7 +8,7 @@ use App\PostfixFilter;
 // this file should be owned by www-data
 // and permission of 0700, see setup.sh
 
-require_once 'src/PostfixFilter.php';
+require_once '../src/PostfixFilter.php';
 
 syslog(LOG_INFO, '[pf-forwardmail] running as '.get_current_user());
 

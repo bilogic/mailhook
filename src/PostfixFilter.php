@@ -256,7 +256,7 @@ class PostfixFilter
         $configFile = "{$this->folder}/../config.json";
         $config = json_decode(file_get_contents($configFile), true);
 
-        return $config;
+        return $config ?? [];
     }
 
     /**

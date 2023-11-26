@@ -1,14 +1,15 @@
 #!/usr/bin/php
 <?php
 
+// bulk bounce Postfix Filter
+//
+// see setup.sh, this file should be
+// 1. owned by user-data
+// 2. permission of 0700
+
 use App\PostfixFilter;
 
-// forwardmail Postfix Filter
-//
-// this file should be owned by www-data
-// and permission of 0700, see setup.sh
-
-require_once 'src/PostfixFilter.php';
+require_once '../src/PostfixFilter.php';
 
 syslog(LOG_INFO, '[pf-bulkbounce.php] running as '.get_current_user());
 
