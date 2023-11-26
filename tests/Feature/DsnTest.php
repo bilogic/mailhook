@@ -96,4 +96,34 @@ class DsnTest extends TestCase
         }
         $this->assertTrue(! $parser->isOutgoing());
     }
+
+    public function test_can_parse_incoming_soft_bounce_dsn()
+    {
+        $parser = (new Dsn)->parse(__DIR__.'/postfix-dsn3.txt');
+        $headers = $parser->getAllHeaders();
+
+        $expected['Return-Path'] = 'box@ssdmeter.com';
+        $expected['DKIM-Signature'] = '1';
+        $expected['Received'] = "by box.e115.com (Postfix, from userid 1000)\r\n        id 5B9103FCF0; Sun, 26 Nov 2023 20:38:46 +0800 (+08)";
+        $expected['To'] = 'SoftBounce@bounce-testing.postmarkapp.com';
+        $expected['Mailhook-Id'] = '1234567890';
+        $expected['Subject'] = 'Hey, I successfully configured Postfix with sender-dependent SASL authentication!';
+        $expected['Content-type'] = 'text/html';
+        $expected['Message-Id'] = '20231126123846.5B9103FCF0@box.e115.com';
+        $expected['Date'] = 'Sun, 26 Nov 2023 20:38:46 +0800';
+        $expected['From'] = 'box@ssdmeter.com';
+        $expected['Final-Recipient'] = 'rfc822; SoftBounce@bounce-testing.postmarkapp.com';
+        $expected['Original-Recipient'] = 'rfc822;SoftBounce@bounce-testing.postmarkapp.com';
+        $expected['Action'] = 'delayed';
+        $expected['Status'] = '4.4.1';
+        $expected['Diagnostic-Code'] = 'X-Postfix; connect to bounce-testing.postmarkapp.com[50.31.156.110]:25: Connection timed out';
+        $expected['Will-Retry-Until'] = 'Tue, 28 Nov 2023 20:38:46 +0800';
+
+        foreach ($expected as $key => $value) {
+            $this->assertEquals($value, $headers[$key]);
+        }
+
+        $this->assertFalse($parser->isHard());
+        $this->assertTrue($parser->isOutgoing());
+    }
 }

@@ -59,8 +59,6 @@ sudo tee -a /etc/postfix/main.cf >/dev/null <<'EOF'
 # custom mailhook settings
 ###############################
 
-# qmgr_daemon_timeout=1000s
-
 maximal_queue_lifetime=0
 delay_warning_time=1m
 notify_classes = 2bounce, bounce, delay, resource, software
