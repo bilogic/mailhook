@@ -7,9 +7,9 @@
 // 1. owned by user-data
 // 2. permission of 0700
 
-use App\PostfixFilter;
-
 require_once '../src/PostfixFilter.php';
+
+use App\PostfixFilter;
 
 syslog(LOG_INFO, '[pf-bulkbounce.php] running as '.get_current_user());
 
