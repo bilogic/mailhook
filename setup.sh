@@ -22,6 +22,7 @@ sudo chmod 0755 src
 
 sudo chown user-data:user-data scripts/pf-forwardmail.php
 sudo chown user-data:user-data scripts/pf-bulkbounce.php
+sudo chmod 0755 scripts
 sudo chmod 0700 scripts/pf-forwardmail.php
 sudo chmod 0700 scripts/pf-bulkbounce.php
 
