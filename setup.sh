@@ -20,10 +20,10 @@ sudo chown www-data:www-data default/*php -R
 sudo chmod 0755 default
 sudo chmod 0755 src
 
-sudo chown user-data:user-data src/pf-forwardmail.php
-sudo chown user-data:user-data src/pf-bulkbounce.php
-sudo chmod 0700 src/pf-forwardmail.php
-sudo chmod 0700 src/pf-bulkbounce.php
+sudo chown user-data:user-data scripts/pf-forwardmail.php
+sudo chown user-data:user-data scripts/pf-bulkbounce.php
+sudo chmod 0700 scripts/pf-forwardmail.php
+sudo chmod 0700 scripts/pf-bulkbounce.php
 
 # customize and restart postfix
 
