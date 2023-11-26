@@ -30,6 +30,8 @@ sudo chown user-data:user-data scripts/pf-bulkbounce.php
 sudo chmod 0700 scripts/pf-forwardmail.php
 sudo chmod 0700 scripts/pf-bulkbounce.php
 
+composer update
+
 # customize and restart postfix
 
 ## customize master.cf

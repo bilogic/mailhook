@@ -19,5 +19,7 @@ $filter->as('pf-bulkbounce')
     ->folder(__DIR__.'/../mail-bounced')
     ->save()
     ->handler(function ($self, $config, $meta, $mailfile) {
+        @unlink($mailfile);
+
         return true; // delete away these emails
     });
