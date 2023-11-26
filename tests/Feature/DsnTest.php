@@ -126,4 +126,38 @@ class DsnTest extends TestCase
         $this->assertFalse($parser->isHard());
         $this->assertTrue($parser->isOutgoing());
     }
+
+    public function test_can_parse_outgoing_mailgun_variables()
+    {
+        $parser = (new Dsn)->parse(__DIR__.'/postfix-dsn4.txt');
+        $headers = $parser->getAllHeaders();
+
+        $expected['Return-Path'] = 'ticket@bookfirst.cc';
+        $expected['DKIM-Signature'] = '1';
+        $expected['X-mailhook-id'] = '1701020791-f4fca396-b0f0-4739-929d-389b34098751';
+        $expected['Date'] = 'Mon, 27 Nov 2023 01:46:31 +0800';
+        $expected['From'] = 'ticket@bookfirst.cc';
+        $expected['Reply-To'] = 'ticket@bookfirst.cc';
+        $expected['Message-ID'] = '9b5012106049e0f1eb490a1923cd804f@bookfirst.cc';
+        $expected['X-Mailer'] = 'PHPMailer 5.2.2-rc1';
+        $expected['MIME-Version'] = '1.0';
+        $expected['Content-Type'] = 'multipart/alternative';
+        $expected['To'] = 'nonexistent@example.com';
+        $expected['Subject'] = '[#45J-DGZ-6PS9] BookFirst Support: aasdfasdf';
+        $expected['Final-Recipient'] = 'rfc822; nonexistent@example.com';
+        $expected['Original-Recipient'] = 'rfc822;nonexistent@example.com';
+        $expected['Action'] = 'failed';
+        $expected['Status'] = '5.1.0';
+        $expected['Diagnostic-Code'] = 'X-Postfix; Domain example.com does not accept mail';
+
+        foreach ($expected as $key => $value) {
+            $this->assertEquals($value, $headers[$key]);
+        }
+
+        $variables = json_decode($headers['X-Mailgun-Variables'], true);
+
+        $this->assertEquals('45J-DGZ-6PS9', $variables['track_id']);
+        $this->assertTrue($parser->isHard());
+        $this->assertTrue($parser->isOutgoing());
+    }
 }

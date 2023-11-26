@@ -1,0 +1,71 @@
+From double-bounce@box.e115.com  Mon Nov 27 01:46:31 2023
+Return-Path: <double-bounce@box.e115.com>
+Received: by box.e115.com (Postfix)
+	id D661A40162; Mon, 27 Nov 2023 01:46:31 +0800 (+08)
+Date: Mon, 27 Nov 2023 01:46:31 +0800 (+08)
+From: MAILER-DAEMON@box.e115.com (Mail Delivery System)
+Subject: Postmaster Copy: Undelivered Mail
+To: bounce@e115.com
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
+Content-Type: multipart/report; report-type=delivery-status;
+	boundary="AD9803FCF0.1701020791/box.e115.com"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20231126174631.D661A40162@box.e115.com>
+
+This is a MIME-encapsulated message.
+
+--AD9803FCF0.1701020791/box.e115.com
+Content-Description: Notification
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+
+<nonexistent@example.com>: Domain example.com does not accept mail (nullMX)
+
+--AD9803FCF0.1701020791/box.e115.com
+Content-Description: Delivery report
+Content-Type: message/delivery-status
+
+Reporting-MTA: dns; box.e115.com
+X-Postfix-Queue-ID: AD9803FCF0
+X-Postfix-Sender: rfc822; ticket@bookfirst.cc
+Arrival-Date: Mon, 27 Nov 2023 01:46:31 +0800 (+08)
+
+Final-Recipient: rfc822; nonexistent@example.com
+Original-Recipient: rfc822;nonexistent@example.com
+Action: failed
+Status: 5.1.0
+Diagnostic-Code: X-Postfix; Domain example.com does not accept mail (nullMX)
+
+--AD9803FCF0.1701020791/box.e115.com
+Content-Description: Undelivered Message Headers
+Content-Type: text/rfc822-headers
+Content-Transfer-Encoding: 8bit
+
+Return-Path: <ticket@bookfirst.cc>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=bookfirst.cc; s=mail;
+	t=1701020791; bh=meW22cJgGAP7PZFUTCkKmMzeojXJMU7QSp1CvzvUXBA=;
+	h=Date:From:Reply-To:To:Subject:From;
+	b=WCuav9uM0C8574ajbw2eklzkaQxlTiISnF4X6wyEoaZ3F2mio04JZ0jG4tZTmDhb0
+	 VAJx9wdnv/BwO3RiXPQjFhc+I3+HePR5n9nbrLLlTk0IvxhmPC43UOvvKD8wnylbor
+	 G2CucX1I/dARZe0DWM1nXGIJR0AE6AD63zvISmH7hZ1bmDYcr78+Id0J5BZEwxJQVl
+	 16/ao7CdIaf1ehF/jdqUgdVwy7I8NKTbrnaJZFpuaiLV9GDomGsyYssi50ZDxnR8D3
+	 PjVpQPXjWN6ilRAOjeoij1oSDg4JMC83drlAdhbgSOW8X2uwUZ7ZVBAO6jinAsXTv0
+	 3lyyvooG5XHVQ==
+Received: by box.e115.com (Postfix, from userid 33)
+	id AD9803FCF0; Mon, 27 Nov 2023 01:46:31 +0800 (+08)
+X-mailhook-id: 1701020791-f4fca396-b0f0-4739-929d-389b34098751
+Date: Mon, 27 Nov 2023 01:46:31 +0800
+From: =?UTF-8?B?Qm9va0ZpcnN0IEN1c3RvbWVyIFNlcnZpY2U=?= <ticket@bookfirst.cc>
+Reply-To: =?UTF-8?B?Qm9va0ZpcnN0IEN1c3RvbWVyIFNlcnZpY2U=?= <ticket@bookfirst.cc>
+Message-ID: <9b5012106049e0f1eb490a1923cd804f@bookfirst.cc>
+X-Mailer: PHPMailer 5.2.2-rc1 (http://code.google.com/a/apache-extras.org/p/phpmailer/)
+X-Mailgun-Variables: {"track_id":"45J-DGZ-6PS9","message":"Reply above this line,\n\nor <a href=\"https:\/\/bookfirst.cc\/support\/ticket.php?track=45J-DGZ-6PS9&Refresh=35069\">view email in browser<\/a><br>\r\n&mdash;<br>\r\n\t\t\t\t<b>Admin<\/b><BR>\n\t\t\t\t<SMALL style=\"COLOR: #7f7f7f\">Mon, 27 Nov 2023 01:46:31 +0800<\/SMALL><BR>\n\t\t\t\t<br>\n\t\t\t\tasdfasdf<br \/>\n<br \/>\n<br \/>\n\n\t\t\t\t<br>        <HR style=\"BORDER-TOP: #cccccc 1px dotted\">\t\t\t\t<b>Admin<\/b><BR>\n\t\t\t\t<SMALL style=\"COLOR: #7f7f7f\">Mon, 27 Nov 2023 01:44:11 +0800<\/SMALL><BR>\n\t\t\t\t<br>\n\t\t\t\tasdfasdf<br \/>\n<br \/>\n<br \/>\n\n\t\t\t\t<br>        <HR style=\"BORDER-TOP: #cccccc 1px dotted\">\t\t\t\t<b>Admin<\/b><BR>\n\t\t\t\t<SMALL style=\"COLOR: #7f7f7f\">Mon, 27 Nov 2023 01:42:35 +0800<\/SMALL><BR>\n\t\t\t\t<br>\n\t\t\t\tasdfasdf\n\t\t\t\t<br>\r\n<hr>\r\n--- End of email ---"}
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="b1_9b5012106049e0f1eb490a1923cd804f"
+To: nonexistent@example.com
+Subject: =?UTF-8?B?WyM0NUotREdaLTZQUzldIEJvb2tGaXJzdCBTdXBwb3J0OiBhYXNkZmFzZGY=?=
+
+--AD9803FCF0.1701020791/box.e115.com--

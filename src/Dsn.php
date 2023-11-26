@@ -50,7 +50,11 @@ class Dsn
 
         if ($original) {
             foreach ($original->getAllHeaders() as $header) {
-                $this->dsnHeaders[$header->getName()] = $header->getValue();
+                if ($header->getName() == 'X-Mailgun-Variables') {
+                    $this->dsnHeaders[$header->getName()] = $header->getRawValue();
+                } else {
+                    $this->dsnHeaders[$header->getName()] = $header->getValue();
+                }
             }
         }
 
