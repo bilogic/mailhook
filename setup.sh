@@ -36,10 +36,10 @@ sudo tee -a /etc/postfix/master.cf >/dev/null <<'EOF'
 ###############################
 
 mailhookforward unix - n n - - pipe
-  flags=F user=user-data argv=/home/ubuntu/miab-data/www/src/pf-forwardmail.php ${recipient} ${sender} ${size}
+  flags=F user=user-data argv=/home/ubuntu/miab-data/www/scripts/pf-forwardmail.php ${recipient} ${sender} ${size}
 
 mailhookbounce unix - n n - - pipe
-  flags=FRq user=user-data argv=/home/ubuntu/miab-data/www/src/pf-bulkbounce.php ${recipient} ${sender} ${size}
+  flags=FRq user=user-data argv=/home/ubuntu/miab-data/www/scripts/pf-bulkbounce.php ${recipient} ${sender} ${size}
 EOF
 
 ## customize main.cf
