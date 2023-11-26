@@ -19,6 +19,7 @@ sudo chown www-data:www-data default/*php -R
 sudo chown www-data:www-data src/*php -R
 sudo chown user-data:user-data vendor/*php -R
 sudo find . -type d -exec chmod 775 {} +
+sudo chmod g+w vendor/* -R
 # sudo chmod 0755 default
 # sudo chmod 0755 src
 # sudo chmod 0755 vendor
