@@ -7,11 +7,12 @@
 // 1. owned by user-data
 // 2. permission of 0700
 
+syslog(LOG_INFO, '[pf-bulkbounce.php] running as '.get_current_user());
+syslog(LOG_INFO, '[pf-bulkbounce.php] running in '.getcwd());
+
 require_once '../src/PostfixFilter.php';
 
 use App\PostfixFilter;
-
-syslog(LOG_INFO, '[pf-bulkbounce.php] running as '.get_current_user());
 
 $filter = new PostfixFilter;
 $filter->as('pf-bulkbounce')
