@@ -13,7 +13,7 @@ require_once 'PostfixFilter.php';
 syslog(LOG_INFO, '[pf-bulkbounce.php] running as '.get_current_user());
 
 $m = new PostfixFilter;
-$m->folder('../mail-bounced')
+$m->folder(__DIR__.'/../mail-bounced')
     ->save()
     ->handler(function ($self, $config, $meta, $mailfile) {
     });

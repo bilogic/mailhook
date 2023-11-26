@@ -57,10 +57,10 @@ class PostfixFilter
             throw new Exception('Must specify a folder to setup');
         }
         $this->folder = $f;
-        $dirs[] = __DIR__."/{$this->folder}";
-        $dirs[] = __DIR__."/{$this->folder}/lock"; // use for mutex locks
-        $dirs[] = __DIR__."/{$this->folder}/tell"; // track if remote end informed?
-        $dirs[] = __DIR__."/{$this->folder}/read"; // track if email been read?
+        $dirs[] = "{$this->folder}";
+        $dirs[] = "{$this->folder}/lock"; // use for mutex locks
+        $dirs[] = "{$this->folder}/tell"; // track if remote end informed?
+        $dirs[] = "{$this->folder}/read"; // track if email been read?
 
         foreach ($dirs as $dir) {
             @mkdir($dir, 0775, true);
@@ -77,11 +77,11 @@ class PostfixFilter
 
     public function remove()
     {
-        $removables = glob(__DIR__."/{$this->folder}/read/*");
+        $removables = glob("{$this->folder}/read/*");
         foreach ($removables as $removable) {
             $filename = basename($removable);
-            $mailfile = __DIR__."/{$this->folder}/$filename";
-            $readfile = __DIR__."/{$this->folder}/read/$filename";
+            $mailfile = "{$this->folder}/$filename";
+            $readfile = "{$this->folder}/read/$filename";
 
             $this->log("- Removing $filename");
 
@@ -92,15 +92,15 @@ class PostfixFilter
 
     public function handler(Closure $closure)
     {
-        $path = __DIR__."/{$this->folder}/tell/*";
+        $path = "{$this->folder}/tell/*";
         $tells = glob($path);
 
         foreach ($tells as $tell) {
             $filename = basename($tell);
 
-            $lockfile = __DIR__."/{$this->folder}/lock/$filename-notify";
-            $mailfile = __DIR__."/{$this->folder}/$filename";
-            $tellfile = __DIR__."/{$this->folder}/tell/$filename";
+            $lockfile = "{$this->folder}/lock/$filename-notify";
+            $mailfile = "{$this->folder}/$filename";
+            $tellfile = "{$this->folder}/tell/$filename";
 
             $mutex = (new FileMutex)->lockfile($lockfile);
             if ($mutex->lock()) {
@@ -152,9 +152,9 @@ class PostfixFilter
 
     public function read($filename, $delete = false): self
     {
-        $lockfile = __DIR__."/{$this->folder}/lock/$filename";
-        $mailfile = __DIR__."/{$this->folder}/$filename";
-        $readfile = __DIR__."/{$this->folder}/read/$filename";
+        $lockfile = "{$this->folder}/lock/$filename";
+        $mailfile = "{$this->folder}/$filename";
+        $readfile = "{$this->folder}/read/$filename";
 
         if (file_exists($mailfile)) {
 
@@ -183,9 +183,9 @@ class PostfixFilter
 
         while (1) {
             $filename = $this->guidv4();
-            $lockfile = __DIR__."/{$this->folder}/lock/$filename";
-            $mailfile = __DIR__."/{$this->folder}/$filename";
-            $tellfile = __DIR__."/{$this->folder}/tell/$filename";
+            $lockfile = "{$this->folder}/lock/$filename";
+            $mailfile = "{$this->folder}/$filename";
+            $tellfile = "{$this->folder}/tell/$filename";
 
             $mutex = (new FileMutex)->lockfile($lockfile);
             if ($mutex->lock()) {
@@ -253,7 +253,7 @@ class PostfixFilter
      */
     private function getConfig(): array
     {
-        $configFile = __DIR__.'/../config.json';
+        $configFile = "{$this->folder}/../config.json";
         $config = json_decode(file_get_contents($configFile), true);
 
         return $config;
