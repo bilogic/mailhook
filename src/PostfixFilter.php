@@ -23,6 +23,24 @@ class PostfixFilter
 
     private $as = 'PostfixFilter';
 
+    public function cache(): static
+    {
+        $code = <<<'PHP'
+        <?php
+
+        $_ENV = [           
+        PHP;
+        foreach ($this->getConfig() as $email => $params) {
+            $code .= "'{$params['key']}' => '$email',".PHP_EOL;
+        }
+        $code .= '];';
+
+        $filename = "{$this->folder}/../.env.php";
+        file_put_contents($filename, $code);
+
+        return $this;
+    }
+
     /**
      * Folder to store the emails
      *

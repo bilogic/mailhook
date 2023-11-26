@@ -3,7 +3,7 @@
 sudo git pull
 
 # setup the mail and bounce folders
-sudo php -r "require_once 'src/PostfixFilter.php'; (new App\PostfixFilter())->setup(__DIR__.'/mail-forward')->setup(__DIR__.'/mail-bounced');"
+sudo php -r "require_once 'src/PostfixFilter.php'; (new App\PostfixFilter())->setup(__DIR__.'/mail-forward')->setup(__DIR__.'/mail-bounced')->cache();"
 
 # setup postfix filters
 sudo chown user-data:user-data * -R

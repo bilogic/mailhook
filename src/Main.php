@@ -7,7 +7,7 @@ require_once '../.env.php';
 
 use Xesau\Router;
 
-syslog(LOG_INFO, '[Main.php] running as '.get_current_user());
+syslog(LOG_INFO, '[Main] running as '.get_current_user());
 
 $router = new Router(function ($method, $path, $statusCode, $exception) {
     http_response_code($statusCode);
