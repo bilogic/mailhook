@@ -23,25 +23,23 @@ $filter = (new PostfixFilter)
         $dst = strtolower($meta[0]);
         $url = $config[$dst]['pipe'].urlencode(basename($mailfile));
 
-        // $url = 'http://www.google.com/asdkfhasdf';
         $self->log("- Notifying [$url]");
         $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HEADER, true);    // we want headers
-        //curl_setopt($ch, CURLOPT_NOBODY, true);    // we don't need body
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);    // capture request headers
+        curl_setopt($ch, CURLOPT_HEADER, true);         // capture response headers
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);    // capture body
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        curl_setopt($ch, CURLINFO_HEADER_OUT, true); // enable tracking
 
         $result = curl_exec($ch);
-        // request headers
         $headerSent = curl_getinfo($ch, CURLINFO_HEADER_OUT);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
         if ($result !== false) {
             $self->log("- cURL headers: [$headerSent]");
             $self->log("- cURL output: [$result]");
             $self->log("- cURL HTTP code: [$httpcode]");
 
-            if ($httpcode == 200) {
+            if ($httpcode >= 200 and $httpcode < 300) {
                 curl_close($ch);
 
                 return true;
@@ -51,8 +49,6 @@ $filter = (new PostfixFilter)
             $self->log('- cURL error: '.curl_error($ch));
         }
         curl_close($ch);
-
-        // failed, check if it is a DSN here and has track_id
 
         return false;
     });
