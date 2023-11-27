@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class DsnTest extends TestCase
 {
-    public function test_can_parse_outgoing_bounce_remote_does_not_accept_mail_dsn()
+    public function test_can_parse_postmaster_hard_bounce_remote_does_not_accept_mail()
     {
         $parser = (new Dsn)->parse(__DIR__.'/postfix-dsn1a.txt');
         $headers = $parser->getAllHeaders();
@@ -36,10 +36,12 @@ class DsnTest extends TestCase
         $this->assertTrue($parser->isOutgoing());
     }
 
-    public function test_can_parse_incoming_bounce_sender_does_not_exist_dsn()
+    public function test_can_parse_postmaster_hard_bounce_sender_does_not_exist()
     {
         $parser = (new Dsn)->parse(__DIR__.'/postfix-dsn1b.txt');
         $headers = $parser->getAllHeaders();
+
+        // var_dump($headers);
 
         $expected['Final-Recipient'] = 'rfc822; nonexist@ssdmeter.com';
         $expected['Original-Recipient'] = 'rfc822;nonexist@ssdmeter.com';
@@ -51,10 +53,10 @@ class DsnTest extends TestCase
         foreach ($expected as $key => $value) {
             $this->assertEquals($value, $headers[$key]);
         }
-        $this->assertTrue(! $parser->isOutgoing());
+        $this->assertEquals(true, ! $parser->isOutgoing());
     }
 
-    public function test_can_parse_outgoing_bounce_user_does_not_exists_dsn()
+    public function test_can_parse_postmaster_hard_bounce_user_does_not_exists()
     {
         $parser = (new Dsn)->parse(__DIR__.'/postfix-dsn2a.txt');
         $headers = $parser->getAllHeaders();
@@ -79,7 +81,7 @@ class DsnTest extends TestCase
         $this->assertTrue($parser->isOutgoing());
     }
 
-    public function test_can_parse_incoming_bounce_root_does_not_exist_dsn()
+    public function test_can_parse_postmaster_hard_bounce_root_does_not_exist()
     {
         $parser = (new Dsn)->parse(__DIR__.'/postfix-dsn2b.txt');
         $headers = $parser->getAllHeaders();
@@ -97,7 +99,7 @@ class DsnTest extends TestCase
         $this->assertTrue(! $parser->isOutgoing());
     }
 
-    public function test_can_parse_incoming_soft_bounce_dsn()
+    public function test_can_parse_postmaster_soft_bounce_connection_timeout()
     {
         $parser = (new Dsn)->parse(__DIR__.'/postfix-dsn3.txt');
         $headers = $parser->getAllHeaders();
@@ -127,7 +129,7 @@ class DsnTest extends TestCase
         $this->assertTrue($parser->isOutgoing());
     }
 
-    public function test_can_parse_outgoing_mailgun_variables()
+    public function test_can_parse_postmaster_hard_bounce_does_not_accept_mail_with_mailgun_variables()
     {
         $parser = (new Dsn)->parse(__DIR__.'/postfix-dsn4.txt');
         $headers = $parser->getAllHeaders();
@@ -159,5 +161,26 @@ class DsnTest extends TestCase
         $this->assertEquals('45J-DGZ-6PS9', $variables['track_id']);
         $this->assertTrue($parser->isHard());
         $this->assertTrue($parser->isOutgoing());
+    }
+
+    public function test_can_parse_sender_hard_bounce_remote_does_not_accept_mail_with_mailgun_variables()
+    {
+        $parser = (new Dsn)->parse(__DIR__.'/postfix-dsn5.txt');
+        $headers = $parser->getAllHeaders();
+
+        $expected['Final-Recipient'] = 'rfc822; adfasdfasdfasdfasdf@example.com';
+        $expected['Original-Recipient'] = 'rfc822;adfasdfasdfasdfasdf@example.com';
+        $expected['Action'] = 'failed';
+        $expected['Status'] = '5.1.0';
+        $expected['Diagnostic-Code'] = 'X-Postfix; Domain example.com does not accept mail';
+
+        foreach ($expected as $key => $value) {
+            $this->assertEquals($value, $headers[$key]);
+        }
+
+        $variables = json_decode($headers['failed']['X-Mailgun-Variables'], true);
+
+        $this->assertEquals('UP6-74G-V82Z', $variables['track_id']);
+
     }
 }
