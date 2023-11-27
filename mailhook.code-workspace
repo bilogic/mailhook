@@ -10,5 +10,6 @@
 		"better-phpunit.commandSuffix": "--stop-on-failure",
 		"terminal.integrated.defaultProfile.linux": "bash",
 		"terminal.integrated.cwd": "${workspaceFolder:current}",
+		"search.exclude": {}
 	}
 }
