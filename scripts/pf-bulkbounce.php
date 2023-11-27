@@ -15,8 +15,8 @@ require_once __DIR__.'/../vendor/autoload.php';
 use App\Dsn;
 use App\PostfixFilter;
 
-$filter = new PostfixFilter;
-$filter->as('pf-bulkbounce')
+$filter = (new PostfixFilter)
+    ->as('pf-bulkbounce')
     ->folder(__DIR__.'/../mail-bounced')
     ->save()
     ->handler(function ($self, $fullConfig, $meta, $mailfile) {

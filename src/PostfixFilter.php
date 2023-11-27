@@ -111,7 +111,7 @@ class PostfixFilter
         }
     }
 
-    public function handler(Closure $closure)
+    public function handler(Closure $closure): static
     {
         $path = "{$this->folder}/tell/*";
         $tells = glob($path);
@@ -160,6 +160,8 @@ class PostfixFilter
                 $mutex->unlock();
             }
         }
+
+        return $this;
     }
 
     /**
