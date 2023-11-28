@@ -317,8 +317,8 @@ class PostfixFilter
         $records = $this->getConfig();
         $sender_logins = '';
         foreach ($records as $email => $record) {
-            $sender_logins .= "/^.*@.*\.{$record['domain']}/    {$record['domain']}".PHP_EOL;
             $sender_logins .= "/^.*@{$record['domain']}/    {$record['domain']}".PHP_EOL;
+            $sender_logins .= "/^.*@.*\.{$record['domain']}/    {$record['domain']}".PHP_EOL;
         }
         // /^.*@.*\.bookfirst.cc/  sender@bookfirst.cc
         // /^.*@bookfirst.cc/      sender@bookfirst.cc
