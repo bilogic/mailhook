@@ -68,7 +68,8 @@ bounce_notice_recipient = bounce@e115.com
 delay_notice_recipient = bounce@e115.com
 error_notice_recipient = bounce@e115.com
 transport_maps = regexp:/etc/postfix/transport_maps
-smtpd_sender_login_maps=unionmap:{pcre:/etc/postfix/sender_logins, sqlite:/etc/postfix/sender-login-maps.cf}
+smtpd_sender_login_maps=unionmap:{sqlite:/etc/postfix/sender-login-maps.cf, pcre:/etc/postfix/sender_logins}
+# smtpd_sender_login_maps=unionmap:{pcre:/etc/postfix/sender_logins, sqlite:/etc/postfix/sender-login-maps.cf}
 # smtpd_sender_login_maps=pcre:/etc/postfix/sender_logins
 EOF
 
