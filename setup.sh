@@ -67,10 +67,18 @@ bounce_notice_recipient = bounce@e115.com
 delay_notice_recipient = bounce@e115.com
 error_notice_recipient = bounce@e115.com
 transport_maps = regexp:/etc/postfix/transport_maps
+#smtpd_sender_login_maps=unionmap:{pcre:/etc/postfix/sender_logins, sqlite:/etc/postfix/sender-login-maps.cf}
+smtpd_sender_login_maps=pcre:/etc/postfix/sender_logins
+EOF
+
+sudo tee -a /etc/postfix/sender_logins >/dev/null <<'EOF'
+/^.*@.*\.bookfirst.cc/  sender@bookfirst.cc
+/^.*@bookfirst.cc/      sender@bookfirst.cc
 EOF
 
 sudo cp transport_maps /etc/postfix/transport_maps
 sudo postmap /etc/postfix/transport_maps
+sudo postmap /etc/postfix/sender_logins
 sudo service postfix restart
 
 # make sure http is ok
