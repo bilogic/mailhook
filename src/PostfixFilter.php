@@ -41,6 +41,9 @@ class PostfixFilter
         $filename = "{$this->folder}/../.env.php";
         file_put_contents($filename, $code);
 
+        file_put_contents('sender_logins', $this->getSenderLogins());
+        file_put_contents('transport_maps', $this->getTransportMaps());
+
         return $this;
     }
 
@@ -90,8 +93,6 @@ class PostfixFilter
             @chown($dir, 'www-data');
             @chgrp($dir, 'www-data');
         }
-
-        file_put_contents('transport_maps', $this->getTransportMaps());
 
         return $this;
     }
@@ -302,5 +303,26 @@ class PostfixFilter
         $transport_maps .= "/.*/ :\r\n";
 
         return $transport_maps;
+    }
+
+    /**
+     * Generate a postfix transport_map contents from config
+     */
+    private function getSenderLogins(): string
+    {
+        // create a file that looks like this
+        // /^me@e115.com/          myhook:dummy
+        // /^ticket@bookfirst.cc/  myhook:dummy
+        // /.*/                    :
+        $records = $this->getConfig();
+        $sender_logins = '';
+        foreach ($records as $email => $record) {
+            $sender_logins .= "/^.*@.*\.{$record['domain']}/    {$record['domain']}".PHP_EOL;
+            $sender_logins .= "/^.*@{$record['domain']}/    {$record['domain']}".PHP_EOL;
+        }
+        // /^.*@.*\.bookfirst.cc/  sender@bookfirst.cc
+        // /^.*@bookfirst.cc/      sender@bookfirst.cc
+
+        return $sender_logins;
     }
 }
