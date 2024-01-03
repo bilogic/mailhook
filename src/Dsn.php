@@ -26,7 +26,11 @@ class Dsn
      */
     public function isOutgoing(): bool
     {
-        return isset($this->dsnHeaders['Return-Path']);
+        if (isset($this->dsnHeaders['Return-Path'])) {
+            return true; //isset($this->dsnHeaders['Return-Path']);
+        } else {
+            return isset($this->dsnHeaders['original']['Return-Path']);
+        }
     }
 
     public function parse($email): self
@@ -45,15 +49,18 @@ class Dsn
                 case 'text/rfc822-headers':
                     $original = $parser->parse($part->getContentStream(), false);
                     break;
+                case 'message/rfc822':
+                    $original = $parser->parse($part->getContentStream(), false);
+                    break;
             }
         }
 
         if ($original) {
             foreach ($original->getAllHeaders() as $header) {
                 if ($header->getName() == 'X-Mailgun-Variables') {
-                    $this->dsnHeaders[$header->getName()] = $header->getRawValue();
+                    $this->dsnHeaders['original'][$header->getName()] = $header->getRawValue();
                 } else {
-                    $this->dsnHeaders[$header->getName()] = $header->getValue();
+                    $this->dsnHeaders['original'][$header->getName()] = $header->getValue();
                 }
             }
         }

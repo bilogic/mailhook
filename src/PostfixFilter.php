@@ -114,8 +114,8 @@ class PostfixFilter
 
     public function handler(Closure $closure): static
     {
-        $path = "{$this->folder}/tell/*";
-        $tells = glob($path);
+        $path = realpath("{$this->folder}/tell");
+        $tells = glob("$path/*");
 
         foreach ($tells as $tell) {
             $filename = basename($tell);
