@@ -86,7 +86,7 @@ function installMailhook() {
 	echo "# Listing domain conf file(s). Must have at least 1"
 	ls *.conf
 
-	sudo ~/mailinabox/tools/web_update
+	sudo /root/mailinabox/tools/web_update
 	sudo service nginx restart
 
 	mailq
