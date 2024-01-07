@@ -2,6 +2,47 @@
 
 # run `sudo mailinabox` and install mailhook
 
+function modifyMasterCf() {
+	## customize master.cf
+	sudo cp /etc/postfix/master.cf.mailinabox /etc/postfix/master.cf
+	sudo tee -a /etc/postfix/master.cf >/dev/null <<-'EOF'
+		###############################
+		# custom mailhook settings
+		###############################
+
+		mailhookforward unix - n n - - pipe
+		  flags=F user=user-data argv=/home/ubuntu/miab-data/www/scripts/pf-forwardmail.php ${recipient} ${sender} ${size}
+
+		mailhookbounce unix - n n - - pipe
+		  flags=FRq user=user-data argv=/home/ubuntu/miab-data/www/scripts/pf-bulkbounce.php ${recipient} ${sender} ${size}
+	EOF
+}
+
+function modifyMainCf() {
+	## customize main.cf
+	sudo cp /etc/postfix/main.cf.mailinabox /etc/postfix/main.cf
+	sudo sed -i -e 's/maximal_queue_lifetime/# maximal_queue_lifetime/g' /etc/postfix/main.cf
+	sudo sed -i -e 's/delay_warning_time/# delay_warning_time/g' /etc/postfix/main.cf
+	sudo sed -i -e 's/smtpd_sender_login_maps/# smtpd_sender_login_maps/g' /etc/postfix/main.cf
+	sudo tee -a /etc/postfix/main.cf >/dev/null <<-'EOF'
+		###############################
+		# custom mailhook settings
+		###############################
+
+		maximal_queue_lifetime=1d
+		delay_warning_time=1m
+		notify_classes = 2bounce, bounce, delay, resource, software
+		bounce_notice_recipient = bounce@e115.com
+		2bounce_notice_recipient = bounce@e115.com
+		delay_notice_recipient = bounce@e115.com
+		error_notice_recipient = bounce@e115.com
+		transport_maps = regexp:/etc/postfix/transport_maps
+		smtpd_sender_login_maps=unionmap:{sqlite:/etc/postfix/sender-login-maps.cf, pcre:/etc/postfix/sender_logins}
+		# smtpd_sender_login_maps=unionmap:{pcre:/etc/postfix/sender_logins, sqlite:/etc/postfix/sender-login-maps.cf}
+		# smtpd_sender_login_maps=pcre:/etc/postfix/sender_logins
+	EOF
+}
+
 function installMailhook() {
 	sudo git pull
 
@@ -37,42 +78,8 @@ function installMailhook() {
 
 	# customize and restart postfix
 
-	## customize master.cf
-	sudo cp /etc/postfix/master.cf.mailinabox /etc/postfix/master.cf
-	sudo tee -a /etc/postfix/master.cf >/dev/null <<-'EOF'
-		###############################
-		# custom mailhook settings
-		###############################
-
-		mailhookforward unix - n n - - pipe
-		  flags=F user=user-data argv=/home/ubuntu/miab-data/www/scripts/pf-forwardmail.php ${recipient} ${sender} ${size}
-
-		mailhookbounce unix - n n - - pipe
-		  flags=FRq user=user-data argv=/home/ubuntu/miab-data/www/scripts/pf-bulkbounce.php ${recipient} ${sender} ${size}
-	EOF
-
-	## customize main.cf
-	sudo cp /etc/postfix/main.cf.mailinabox /etc/postfix/main.cf
-	sudo sed -i -e 's/maximal_queue_lifetime/# maximal_queue_lifetime/g' /etc/postfix/main.cf
-	sudo sed -i -e 's/delay_warning_time/# delay_warning_time/g' /etc/postfix/main.cf
-	sudo sed -i -e 's/smtpd_sender_login_maps/# smtpd_sender_login_maps/g' /etc/postfix/main.cf
-	sudo tee -a /etc/postfix/main.cf >/dev/null <<-'EOF'
-		###############################
-		# custom mailhook settings
-		###############################
-
-		maximal_queue_lifetime=1d
-		delay_warning_time=1m
-		notify_classes = 2bounce, bounce, delay, resource, software
-		bounce_notice_recipient = bounce@e115.com
-		2bounce_notice_recipient = bounce@e115.com
-		delay_notice_recipient = bounce@e115.com
-		error_notice_recipient = bounce@e115.com
-		transport_maps = regexp:/etc/postfix/transport_maps
-		smtpd_sender_login_maps=unionmap:{sqlite:/etc/postfix/sender-login-maps.cf, pcre:/etc/postfix/sender_logins}
-		# smtpd_sender_login_maps=unionmap:{pcre:/etc/postfix/sender_logins, sqlite:/etc/postfix/sender-login-maps.cf}
-		# smtpd_sender_login_maps=pcre:/etc/postfix/sender_logins
-	EOF
+	modifyMasterCf
+	modifyMainCf
 
 	sudo cp sender_logins /etc/postfix/sender_logins
 	sudo postmap /etc/postfix/sender_logins
