@@ -107,7 +107,7 @@ sudo rm /etc/postfix/main.cf.mailinabox
 sudo rm /etc/postfix/master.cf.mailinabox
 sudo rm /etc/postfix/main.cf
 sudo rm /etc/postfix/master.cf
-sudo apt -y remove postfix
+sudo apt -y purge postfix
 
 sudo PRIMARY_HOSTNAME=auto NONINTERACTIVE=1 mailinabox
 
