@@ -74,7 +74,7 @@ function installMailhook() {
 	sudo chmod 0700 scripts/pf-forwardmail.php
 	sudo chmod 0700 scripts/pf-bulkbounce.php
 
-	COMPOSER_ALLOW_SUPERUSER =1 composer update
+	COMPOSER_ALLOW_SUPERUSER=1 composer update
 
 	# customize and restart postfix
 
