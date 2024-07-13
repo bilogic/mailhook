@@ -1,0 +1,4 @@
+/^ticket@bookfirst.cc/ mailhookforward:dummy
+/^ticket@vxcharts.com/ mailhookforward:dummy
+/^bounce@e115.com/   mailhookbounce:dummy
+/.*/ :

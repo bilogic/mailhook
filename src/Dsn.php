@@ -4,6 +4,11 @@ namespace App;
 
 use ZBateson\MailMimeParser\MailMimeParser;
 
+/**
+ * A Delivery Status Notification (DSN), or simply a bounce,
+ * is an automated electronic mail message from a mail system informing
+ * the sender of another message about a delivery problem.
+ */
 class Dsn
 {
     private $dsnHeaders = [];

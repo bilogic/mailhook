@@ -20,8 +20,7 @@ $filter = (new PostfixFilter)
     ->save()
     ->handler(function ($self, $config, $meta, $mailfile) {
 
-        $dst = strtolower($meta[0]);
-        $url = $config[$dst]['pipe'].urlencode(basename($mailfile));
+        $url = $config['pipe'].urlencode(basename($mailfile));
 
         $self->log("- Notifying [$url]");
         $ch = curl_init($url);
@@ -29,6 +28,7 @@ $filter = (new PostfixFilter)
         curl_setopt($ch, CURLOPT_HEADER, true);         // capture response headers
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);    // capture body
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $config);
 
         $result = curl_exec($ch);
         $headerSent = curl_getinfo($ch, CURLINFO_HEADER_OUT);

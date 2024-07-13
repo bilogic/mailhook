@@ -141,7 +141,7 @@ class PostfixFilter
                             $this->log("- Cannot find config for $dst");
                         }
 
-                        $result = ($closure)($this, $config, $tell, $mailfile);
+                        $result = ($closure)($this, $config[$dst], $tell, $mailfile);
 
                         // $url = $config[$dst].urlencode($filename);
                         // $message = "Mail for $dst, piping to: {$url}";

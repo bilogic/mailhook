@@ -19,7 +19,7 @@ $filter = (new PostfixFilter)
     ->as('pf-bulkbounce')
     ->folder(__DIR__.'/../mail-bounced')
     ->save()
-    ->handler(function ($self, $fullConfig, $meta, $mailfile) {
+    ->handler(function ($self, $config, $meta, $mailfile) {
 
         $parser = (new Dsn)->parse($mailfile);
 
@@ -38,16 +38,15 @@ $filter = (new PostfixFilter)
                 return true;
             }
 
-            $config = $fullConfig[$dst];
             $secret = $config['signing-secret'];
             $eventData = [
-                'id' => 'DACSsAdVSeGpLid7TN03WA',
-                'event' => 'failed',
-                'log-level' => 'error',
-                'timestamp' => strtotime('now'),
-                'recipient' => $dst,
+                'id'               => 'DACSsAdVSeGpLid7TN03WA',
+                'event'            => 'failed',
+                'log-level'        => 'error',
+                'timestamp'        => strtotime('now'),
+                'recipient'        => $dst,
                 'recipient-domain' => 'recipient-domain',
-                'message' => [
+                'message'          => [
                     'headers' => $dsn,
                 ],
                 'user-variables' => $userVariables,
@@ -55,14 +54,14 @@ $filter = (new PostfixFilter)
 
             $signature = [
                 'timestamp' => strtotime('now'),
-                'token' => $self->guidv4(),
+                'token'     => $self->guidv4(),
             ];
 
             $plain = $signature['timestamp'].$signature['token'];
             $signature['signature'] = hash_hmac('sha256', $plain, $secret);
 
             $payload = [
-                'signature' => $signature,
+                'signature'  => $signature,
                 'event-data' => $eventData,
             ];
 
@@ -81,14 +80,14 @@ $filter = (new PostfixFilter)
 
             $json = json_encode($payload);
             $options = [
-                CURLOPT_URL => $url,
-                CURLOPT_POST => true,
-                CURLOPT_HEADER => true, // we want the headers
-                CURLOPT_HTTPHEADER => $curlHeaders,
-                CURLOPT_POSTFIELDS => $json,
+                CURLOPT_URL            => $url,
+                CURLOPT_POST           => true,
+                CURLOPT_HEADER         => true, // we want the headers
+                CURLOPT_HTTPHEADER     => $curlHeaders,
+                CURLOPT_POSTFIELDS     => $json,
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_TIMEOUT => 10,
-                CURLINFO_HEADER_OUT => true,
+                CURLOPT_TIMEOUT        => 10,
+                CURLINFO_HEADER_OUT    => true,
             ];
 
             $ch = curl_init();

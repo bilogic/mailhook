@@ -1,0 +1,66 @@
+From double-bounce@box.e115.com  Sun Nov 26 20:45:20 2023
+Return-Path: <double-bounce@box.e115.com>
+Received: by box.e115.com (Postfix)
+        id 5623E3FCFD; Sun, 26 Nov 2023 20:45:20 +0800 (+08)
+Date: Sun, 26 Nov 2023 20:45:20 +0800 (+08)
+From: MAILER-DAEMON@box.e115.com (Mail Delivery System)
+Subject: Postmaster Warning: Delayed Mail
+To: bounce@e115.com
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
+Content-Type: multipart/report; report-type=delivery-status;
+        boundary="5B9103FCF0.1701002720/box.e115.com"
+Message-Id: <20231126124520.5623E3FCFD@box.e115.com>
+
+This is a MIME-encapsulated message.
+
+--5B9103FCF0.1701002720/box.e115.com
+Content-Description: Notification
+Content-Type: text/plain; charset=us-ascii
+
+
+<SoftBounce@bounce-testing.postmarkapp.com>: connect to
+    bounce-testing.postmarkapp.com[50.31.156.110]:25: Connection timed out
+
+--5B9103FCF0.1701002720/box.e115.com
+Content-Description: Delivery report
+Content-Type: message/delivery-status
+
+Reporting-MTA: dns; box.e115.com
+X-Postfix-Queue-ID: 5B9103FCF0
+X-Postfix-Sender: rfc822; box@ssdmeter.com
+Arrival-Date: Sun, 26 Nov 2023 20:38:46 +0800 (+08)
+
+Final-Recipient: rfc822; SoftBounce@bounce-testing.postmarkapp.com
+Original-Recipient: rfc822;SoftBounce@bounce-testing.postmarkapp.com
+Action: delayed
+Status: 4.4.1
+Diagnostic-Code: X-Postfix; connect to
+    bounce-testing.postmarkapp.com[50.31.156.110]:25: Connection timed out
+Will-Retry-Until: Tue, 28 Nov 2023 20:38:46 +0800 (+08)
+
+--5B9103FCF0.1701002720/box.e115.com
+Content-Description: Undelivered Message Headers
+Content-Type: text/rfc822-headers
+
+Return-Path: <box@ssdmeter.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ssdmeter.com; s=mail;
+        t=1701002326; bh=m/QnVeRMIcapwTRYya5Z5lWrsxhSnstokOiB27Fvjo4=;
+        h=To:Subject:Date:From:From;
+        b=lNy+03BVDyAl+3sZsiccglAF3OSpWpwyxr/KaCFRuf3bpGcAZY/DaajWhRucuisXA
+         J2YazzcqqdTLZPbOtG0m0EL1DFPY/Cb0rFRv190r473ZcGBmBYSjjRcueJmtCsyJMx
+         LFibciuAGp9qmU6tGuqF82RdQmH3BeG4GFFXxTTTP1/fpcIhW8U6dcQ1CgK7t5MqLi
+         vdvFHZzOcXqQzODKpv6k0Y2JJ2JasJfJ9VKKKOejcxyJcjwy10//4mtTKQCCmsEu1r
+         7OjGZB6PCraBbGgvac31zE6xVAGumQeuCLz2PMQYAPIUUB4PTRiUUjHKvij3u66Cfd
+         mbCGfRtsgiy+w==
+Received: by box.e115.com (Postfix, from userid 1000)
+        id 5B9103FCF0; Sun, 26 Nov 2023 20:38:46 +0800 (+08)
+To: SoftBounce@bounce-testing.postmarkapp.com
+Mailhook-Id: 1234567890
+Subject: Hey, I successfully configured Postfix with sender-dependent SASL authentication!
+Content-type: text/html
+Message-Id: <20231126123846.5B9103FCF0@box.e115.com>
+Date: Sun, 26 Nov 2023 20:38:46 +0800 (+08)
+From: SS <box@ssdmeter.com>
+
+--5B9103FCF0.1701002720/box.e115.com--
