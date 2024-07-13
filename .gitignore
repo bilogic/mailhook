@@ -2,3 +2,19 @@
 config.json
 public
 README.md
+# main package symlinks
+# app
+# config
+# database
+# resources
+# routes
+# tests/Feature
+# tests/Unit
+
+# this should be re-created automatically
+/public/vendor
+/public/assets
+storage
+
+*phpunit-result*
+opentabs.xml
