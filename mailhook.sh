@@ -74,7 +74,7 @@ function installMailhook() {
 	sudo chmod 0700 scripts/pf-forwardmail.php
 	sudo chmod 0700 scripts/pf-bulkbounce.php
 
-	composer update
+	COMPOSER_ALLOW_SUPERUSER=1 composer update
 
 	# customize and restart postfix
 
@@ -107,7 +107,7 @@ sudo rm /etc/postfix/main.cf.mailinabox
 sudo rm /etc/postfix/master.cf.mailinabox
 sudo rm /etc/postfix/main.cf
 sudo rm /etc/postfix/master.cf
-sudo apt -y remove postfix
+sudo apt -y purge postfix
 
 sudo PRIMARY_HOSTNAME=auto NONINTERACTIVE=1 mailinabox
 
