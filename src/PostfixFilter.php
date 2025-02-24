@@ -2,6 +2,7 @@
 
 namespace App;
 
+ignore_user_abort(true);
 error_reporting(E_ALL);
 ini_set('display_errors', false);
 ini_set('log_errors', 1);
